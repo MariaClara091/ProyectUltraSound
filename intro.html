@@ -1,0 +1,631 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Ultrasound Nerve Segmentation &#8212; Ultrasound Nerve Segmentation — Deep Learning Benchmark</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Análisis Exploratorio de Datos (EDA)" href="Notebooks/01_EDA.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    Ultrasound Nerve Segmentation
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/01_EDA.html">1. Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/02_literatura.html">2. Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/02_models.html">3. Implementación de Modelos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/03_benchmark.html">4. Benchmark y Análisis Estadístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/04_informe_final.html">5. Informe Final</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/intro.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Ultrasound Nerve Segmentation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-project-brachial-plexus-segmentation">Deep Learning Project — Brachial Plexus Segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-hace-este-proyecto">¿Qué hace este proyecto?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-libro">Estructura del libro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado-principal">Resultado principal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-metodologicos">Hallazgos metodológicos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gap-identificado-para-trabajo-futuro">Gap identificado para trabajo futuro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autores-y-reproducibilidad">Autores y reproducibilidad</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ultrasound-nerve-segmentation">
+<h1>Ultrasound Nerve Segmentation<a class="headerlink" href="#ultrasound-nerve-segmentation" title="Permalink to this heading">#</a></h1>
+<section id="deep-learning-project-brachial-plexus-segmentation">
+<h2>Deep Learning Project — Brachial Plexus Segmentation<a class="headerlink" href="#deep-learning-project-brachial-plexus-segmentation" title="Permalink to this heading">#</a></h2>
+<p>María Clara Ávila Chinchia, Mateo José Giraldo Castillo, Miguel Angel Lugo Cozzarelli, Hector David SanJuan Fábregas</p>
+<div class="tip admonition">
+<p class="admonition-title">Contexto clínico</p>
+<p>La segmentación automática del Plexo Braquial en imágenes de ultrasonido es un paso crítico para la anestesia regional guiada por imagen. Una identificación precisa del nervio permite insertar catéteres de manejo del dolor con mayor exactitud, reduciendo la dependencia de narcóticos y acelerando la recuperación post-quirúrgica.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="que-hace-este-proyecto">
+<h2>¿Qué hace este proyecto?<a class="headerlink" href="#que-hace-este-proyecto" title="Permalink to this heading">#</a></h2>
+<p>Este proyecto implementa un <strong>benchmark completo de 5 modelos de Deep Learning</strong> para segmentación semántica binaria del Plexo Braquial en imágenes de ultrasonido, utilizando el dataset público de la competencia <a class="reference external" href="https://www.kaggle.com/c/ultrasound-nerve-segmentation">Kaggle Ultrasound Nerve Segmentation (2016)</a>.</p>
+<p><strong>Problema:</strong> dado un frame de ultrasonido del cuello (580×420 px, escala de grises), predecir a nivel de píxel si contiene el Plexo Braquial y, si es así, qué región lo contiene.</p>
+<p><strong>Desafío principal:</strong> el 60% de las imágenes no contienen el nervio — un desbalance severo que penaliza fuertemente el Dice coefficient global (métrica oficial de Kaggle).</p>
+</section>
+<hr class="docutils" />
+<section id="dataset">
+<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading">#</a></h2>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Característica</p></th>
+<th class="head"><p>Valor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fuente</p></td>
+<td><p>Kaggle Ultrasound Nerve Segmentation (2016)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Imágenes de entrenamiento</p></td>
+<td><p>5,635 frames</p></td>
+</tr>
+<tr class="row-even"><td><p>Imágenes de test</p></td>
+<td><p>5,508 frames</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pacientes únicos</p></td>
+<td><p>47</p></td>
+</tr>
+<tr class="row-even"><td><p>Resolución</p></td>
+<td><p>580 × 420 px, escala de grises</p></td>
+</tr>
+<tr class="row-odd"><td><p>Con nervio presente</p></td>
+<td><p>~40% (2,269 imágenes)</p></td>
+</tr>
+<tr class="row-even"><td><p>Sin nervio presente</p></td>
+<td><p>~60% (3,366 imágenes)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pares contradictorios detectados</p></td>
+<td><p>33 (SSIM &gt; 0.90, etiqueta distinta)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="estructura-del-libro">
+<h2>Estructura del libro<a class="headerlink" href="#estructura-del-libro" title="Permalink to this heading">#</a></h2>
+<p>Este libro está organizado en cuatro capítulos que siguen el flujo completo del proyecto:</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-2 sd-row-cols-xs-2 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Capítulo 1 — EDA</div>
+<p class="sd-card-text">Análisis Exploratorio exhaustivo: calidad del dataset, detección de contradictorios SSIM, distribución espacial del nervio, split por paciente sin data leakage, y parámetros de normalización.</p>
+</div>
+<a class="sd-stretched-link reference internal" href="Notebooks/01_EDA.html"><span class="doc"></span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Capítulo 2 — Estado del Arte</div>
+<p class="sd-card-text">Revisión de 10+ papers con fichas técnicas del Top 5, comparación crítica estructurada, e identificación del gap en la literatura.</p>
+</div>
+<a class="sd-stretched-link reference internal" href="Notebooks/02_literatura.html"><span class="doc"></span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Capítulo 3 — Modelos</div>
+<p class="sd-card-text">Implementación de 5 benchmarks bajo el mismo entorno experimental: U-Net, Attention U-Net, ResU-Net, Dual-head U-Net y TU-Net.</p>
+</div>
+<a class="sd-stretched-link reference internal" href="Notebooks/02_models.html"><span class="doc"></span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Capítulo 4 — Benchmark</div>
+<p class="sd-card-text">Análisis estadístico riguroso: Friedman test, Nemenyi post-hoc, Wilcoxon con corrección de Bonferroni, IC 95%, análisis cualitativo y discusión crítica.</p>
+</div>
+<a class="sd-stretched-link reference internal" href="Notebooks/03_benchmark.html"><span class="doc"></span></a></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="resultado-principal">
+<h2>Resultado principal<a class="headerlink" href="#resultado-principal" title="Permalink to this heading">#</a></h2>
+<div class="important admonition">
+<p class="admonition-title">Hallazgo central</p>
+<p>El <strong>Dual-head U-Net</strong> obtuvo <strong>Dice = 0.6032 ± 0.17</strong>, siendo estadísticamente superior a los otros 4 modelos en todas las comparaciones pareadas (Friedman χ² = 469.63, p ≈ 10⁻¹⁰⁰).</p>
+<p>El cuello de botella del problema <strong>no es la arquitectura del segmentador</strong> sino el desbalance entre imágenes con y sin nervio. La rama clasificadora explícita (que predice presencia/ausencia del nervio antes de segmentar) produjo un salto del +235% en Dice respecto al U-Net baseline.</p>
+</div>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Ranking</p></th>
+<th class="head"><p>Modelo</p></th>
+<th class="head"><p>Dice (media ± std)</p></th>
+<th class="head"><p>Mejora vs baseline</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>🥇 1</p></td>
+<td><p>Dual-head U-Net</p></td>
+<td><p>0.6032 ± 0.17</p></td>
+<td><p>+235%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>🥈 2</p></td>
+<td><p>Attention U-Net</p></td>
+<td><p>0.2567 ± 0.29</p></td>
+<td><p>+43%</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>🥉 3</p></td>
+<td><p>ResU-Net</p></td>
+<td><p>0.2345 ± 0.26</p></td>
+<td><p>+30%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>4</p></td>
+<td><p>TU-Net</p></td>
+<td><p>0.1971 ± 0.29</p></td>
+<td><p>+10%</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>5</p></td>
+<td><p>U-Net (baseline)</p></td>
+<td><p>0.1798 ± 0.29</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="hallazgos-metodologicos">
+<h2>Hallazgos metodológicos<a class="headerlink" href="#hallazgos-metodologicos" title="Permalink to this heading">#</a></h2>
+<p><strong>1. La estrategia dual supera a la innovación arquitectónica pura.</strong>
+Cuatro modelos con arquitecturas radicalmente distintas (U-Net, Attention, Residual, Transformer) quedaron en el rango 0.18–0.26, mientras que el modelo que ataca directamente el desbalance del dataset llegó a 0.60. Esto cuantifica empíricamente que el problema dominante es el desbalance, no la capacidad del segmentador.</p>
+<p><strong>2. Atención &gt; Profundidad &gt; Transformers (para datasets pequeños).</strong>
+Para este problema con target pequeño (~2,000 px²) en imágenes ruidosas, los attention gates son más efectivos que los bloques residuales o los mecanismos de self-attention global. Los Transformers requieren datos masivos que este dataset (3,836 imágenes de train) no puede proveer.</p>
+<p><strong>3. Split por paciente ≠ split aleatorio.</strong>
+Los scores de la literatura (65–79% Dice) usan splits aleatorios donde frames del mismo paciente caen en train y test, generando data leakage. Nuestro split por paciente completo es metodológicamente más estricto y refleja el escenario clínico real.</p>
+</section>
+<hr class="docutils" />
+<section id="gap-identificado-para-trabajo-futuro">
+<h2>Gap identificado para trabajo futuro<a class="headerlink" href="#gap-identificado-para-trabajo-futuro" title="Permalink to this heading">#</a></h2>
+<p>Ningún paper publicado ha combinado el principio del clasificador explícito (Van Boxtel et al., 2021) con arquitecturas modernas como HA-SAM (MICCAI 2025) o MedSAM-2. Esta combinación — dual-head + foundation model preentrenado en imágenes médicas — representa la dirección más prometedora para superar el 79.59% reportado como SOTA.</p>
+</section>
+<hr class="docutils" />
+<section id="autores-y-reproducibilidad">
+<h2>Autores y reproducibilidad<a class="headerlink" href="#autores-y-reproducibilidad" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Dataset:</strong> <a class="reference external" href="https://www.kaggle.com/c/ultrasound-nerve-segmentation">Kaggle Ultrasound Nerve Segmentation</a></p></li>
+<li><p><strong>Semillas fijas:</strong> 42, 123, 777 (3 runs por modelo)</p></li>
+<li><p><strong>Split:</strong> 70/15/15 por paciente completo, estratificado</p></li>
+<li><p><strong>Normalización:</strong> mean=0.3877, std=0.2181 (calculados solo en train)</p></li>
+<li><p><strong>Hardware:</strong> documentado en <code class="docutils literal notranslate"><span class="pre">Notebooks/02_models.ipynb</span></code></p></li>
+<li><p><strong>Código:</strong> <code class="docutils literal notranslate"><span class="pre">docs/Notebooks/</span></code> — EDA, modelos, benchmark</p></li>
+<li><p><strong>Resultados:</strong> <code class="docutils literal notranslate"><span class="pre">docs/results/</span></code> — JSON por modelo, CSVs, figuras</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/01_EDA.html">1. Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/02_literatura.html">2. Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/02_models.html">3. Implementación de Modelos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/03_benchmark.html">4. Benchmark y Análisis Estadístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/04_informe_final.html">5. Informe Final</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="right-next"
+       href="Notebooks/01_EDA.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Análisis Exploratorio de Datos (EDA)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-project-brachial-plexus-segmentation">Deep Learning Project — Brachial Plexus Segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-hace-este-proyecto">¿Qué hace este proyecto?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-libro">Estructura del libro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado-principal">Resultado principal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-metodologicos">Hallazgos metodológicos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gap-identificado-para-trabajo-futuro">Gap identificado para trabajo futuro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autores-y-reproducibilidad">Autores y reproducibilidad</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By ProyectoUltrasound
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

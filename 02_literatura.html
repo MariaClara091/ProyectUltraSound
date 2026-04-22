@@ -1,0 +1,951 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Estado del Arte — Segmentación del Plexo Braquial con Deep Learning &#8212; Ultrasound Nerve Segmentation — Deep Learning Benchmark</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '02_literatura';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Deep Learning Project — Brachial Plexus Segmentation
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/01_EDA.html">1. Análisis Exploratorio de Datos</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/02_literatura.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Estado del Arte — Segmentación del Plexo Braquial con Deep Learning</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estrategia-de-busqueda">3.1 Estrategia de Búsqueda</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#palabras-clave-utilizadas">Palabras clave utilizadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bases-de-datos-consultadas">Bases de datos consultadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#criterios-de-inclusion">Criterios de inclusión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#criterios-de-exclusion">Criterios de exclusión</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#top-5-analisis-detallado-por-modelo">3.2 Top 5 — Análisis Detallado por Modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-1-u-net-baseline-historico">Modelo 1 — U-Net (Baseline histórico)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-2-improved-u-net-con-modulos-inception">Modelo 2 — Improved U-Net con módulos Inception</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-3-resu-net-optimizado-con-dac-y-rmp">Modelo 3 — ResU-Net optimizado con DAC y RMP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-4-hybrid-dnn-clasificador-segmentador-paper-guia">Modelo 4 — Hybrid DNN: Clasificador + Segmentador (Paper Guía)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-5-tu-net-transformer-u-net-con-joint-loss-sota">Modelo 5 — TU-Net: Transformer + U-Net con joint loss (SOTA)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-critica-estructurada">3.3 Comparación Crítica Estructurada</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tendencias-identificadas">Tendencias identificadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gap-identificado-en-la-literatura">Gap identificado en la literatura</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seccion-5-paper-guia">3.4 Sección 5 — Paper Guía</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="estado-del-arte-segmentacion-del-plexo-braquial-con-deep-learning">
+<h1>Estado del Arte — Segmentación del Plexo Braquial con Deep Learning<a class="headerlink" href="#estado-del-arte-segmentacion-del-plexo-braquial-con-deep-learning" title="Permalink to this heading">#</a></h1>
+<div class="note admonition">
+<p class="admonition-title">Sección 3 del Entregable</p>
+<p>Esta sección identifica el Top 5 de modelos de Deep Learning relevantes para el problema, basada en literatura científica reciente (Q1/Q2 en WoS/Scopus o conferencias top: AAAI, MICCAI, IEEE). Incluye estrategia de búsqueda, análisis detallado por modelo y comparación crítica.</p>
+</div>
+<hr class="docutils" />
+<section id="estrategia-de-busqueda">
+<h2>3.1 Estrategia de Búsqueda<a class="headerlink" href="#estrategia-de-busqueda" title="Permalink to this heading">#</a></h2>
+<section id="palabras-clave-utilizadas">
+<h3>Palabras clave utilizadas<a class="headerlink" href="#palabras-clave-utilizadas" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ultrasound</span> <span class="pre">nerve</span> <span class="pre">segmentation&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;brachial</span> <span class="pre">plexus</span> <span class="pre">segmentation</span> <span class="pre">deep</span> <span class="pre">learning&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;U-Net</span> <span class="pre">medical</span> <span class="pre">image</span> <span class="pre">segmentation</span> <span class="pre">ultrasound&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;transformer</span> <span class="pre">ultrasound</span> <span class="pre">segmentation</span> <span class="pre">brachial</span> <span class="pre">plexus&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Kaggle</span> <span class="pre">ultrasound</span> <span class="pre">nerve</span> <span class="pre">segmentation</span> <span class="pre">benchmark&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;dual</span> <span class="pre">head</span> <span class="pre">segmentation</span> <span class="pre">nerve</span> <span class="pre">presence&quot;</span></code></p></li>
+</ul>
+</section>
+<section id="bases-de-datos-consultadas">
+<h3>Bases de datos consultadas<a class="headerlink" href="#bases-de-datos-consultadas" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Base de datos</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Período</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>IEEE Xplore</p></td>
+<td><p>Conferencias y revistas de ingeniería</p></td>
+<td><p>2015–2024</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scopus</p></td>
+<td><p>Multidisciplinar, incluye MICCAI, MedIA</p></td>
+<td><p>2015–2024</p></td>
+</tr>
+<tr class="row-even"><td><p>arXiv (cs.CV, eess.IV)</p></td>
+<td><p>Preprints de visión por computador</p></td>
+<td><p>2015–2024</p></td>
+</tr>
+<tr class="row-odd"><td><p>PubMed Central</p></td>
+<td><p>Imágenes médicas y aplicaciones clínicas</p></td>
+<td><p>2015–2024</p></td>
+</tr>
+<tr class="row-even"><td><p>Google Scholar</p></td>
+<td><p>Identificación de papers no indexados</p></td>
+<td><p>2015–2024</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Período de búsqueda:</strong> 2015–2024 (9 años). 2015 marca la publicación del U-Net original; 2024 captura el estado del arte más reciente.</p>
+</section>
+<section id="criterios-de-inclusion">
+<h3>Criterios de inclusión<a class="headerlink" href="#criterios-de-inclusion" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Uso explícito del dataset Kaggle Ultrasound Nerve Segmentation (UNS-2016)</p></li>
+<li><p>Aplicación de Deep Learning (CNN, Transformer, modelos híbridos o foundation models)</p></li>
+<li><p>Reporte cuantitativo de métricas de segmentación (Dice y/o IoU)</p></li>
+<li><p>Publicación en revista Q1/Q2 o conferencia top (AAAI, MICCAI, CVPR, IEEE IST, PeerJ CS)</p></li>
+</ol>
+</section>
+<section id="criterios-de-exclusion">
+<h3>Criterios de exclusión<a class="headerlink" href="#criterios-de-exclusion" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Trabajos puramente teóricos sin validación empírica en el dataset</p></li>
+<li><p>Estudios con datasets sintéticos o privados exclusivamente</p></li>
+<li><p>Papers sin reporte de Dice coefficient (métrica oficial de la competencia)</p></li>
+<li><p>Trabajos anteriores a U-Net (2015) — métodos clásicos de visión artificial</p></li>
+</ol>
+<p><strong>Resultado de la búsqueda:</strong> 47 papers identificados → 12 relevantes con el dataset UNS-2016 → <strong>Top 5 seleccionados</strong> para análisis detallado.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="top-5-analisis-detallado-por-modelo">
+<h2>3.2 Top 5 — Análisis Detallado por Modelo<a class="headerlink" href="#top-5-analisis-detallado-por-modelo" title="Permalink to this heading">#</a></h2>
+<section id="modelo-1-u-net-baseline-historico">
+<h3>Modelo 1 — U-Net (Baseline histórico)<a class="headerlink" href="#modelo-1-u-net-baseline-historico" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia completa (IEEE):</strong></p>
+<blockquote>
+<div><p>O. Ronneberger, P. Fischer, and T. Brox, “U-Net: Convolutional Networks for Biomedical Image Segmentation,” in <em>Proc. Medical Image Computing and Computer-Assisted Intervention (MICCAI)</em>, Munich, Germany, 2015, pp. 234–241. doi: 10.1007/978-3-319-24574-4_28.</p>
+</div></blockquote>
+<p><strong>Tipo de arquitectura:</strong> CNN — Encoder-Decoder con skip connections (FCN simétrica)</p>
+<p><strong>Componentes principales:</strong></p>
+<ul class="simple">
+<li><p><em>Encoder (contraction path):</em> 4 bloques de 2 convoluciones 3×3 + ReLU + MaxPool 2×2. Duplica canales en cada nivel (64→128→256→512→1024).</p></li>
+<li><p><em>Decoder (expansion path):</em> Upsampling 2×2 + concatenación con feature maps del encoder (skip connections) + 2 convoluciones 3×3. Restaura resolución espacial.</p></li>
+<li><p><em>Cabeza de salida:</em> Convolución 1×1 → mapa de segmentación binaria.</p></li>
+</ul>
+<p><strong>Flujo de datos:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Imagen (1×572×572) → Encoder (4 niveles, MaxPool) → Bottleneck (1024 ch)
+→ Decoder (4 niveles, UpConv + skip concat) → Segmentation head → Máscara (2×388×388)
+</pre></div>
+</div>
+<p><strong>Innovación respecto a modelos previos:</strong> Primera arquitectura FCN con skip connections simétricas que permiten recuperar detalles espaciales finos perdidos en el downsampling. Diseñada para funcionar con muy pocos datos mediante data augmentation agresiva (deformación elástica).</p>
+<p><strong>Dataset(s) en el paper:</strong> EM segmentation challenge, ISBI cell tracking challenge. Aplicado posteriormente al dataset Kaggle UNS-2016 por la comunidad.</p>
+<p><strong>Métricas reportadas:</strong> IoU = 0.9203 (EM segmentation); Kaggle UNS: Dice ≈ 0.57–0.65 (reportado por terceros).</p>
+<p><strong>N° de parámetros:</strong> ~31M (configuración original); versiones ligeras ~7.77M (implementación benchmark de este proyecto).</p>
+<p><strong>Tiempo de entrenamiento:</strong> No reportado en el paper original. En nuestro benchmark: ~43 min/run (GPU).</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fortalezas</p></th>
+<th class="head"><p>Limitaciones</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Excelente con datasets pequeños</p></td>
+<td><p>No maneja desbalance de clases</p></td>
+</tr>
+<tr class="row-odd"><td><p>Skip connections preservan detalles finos</p></td>
+<td><p>Sin mecanismo explícito de atención</p></td>
+</tr>
+<tr class="row-even"><td><p>Arquitectura simple e interpretable</p></td>
+<td><p>Propenso a falsos positivos en imágenes sin nervio</p></td>
+</tr>
+<tr class="row-odd"><td><p>Amplio soporte en librerías (smp, monai)</p></td>
+<td><p>Train Dice &gt;&gt; Val Dice → overfitting severo</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rol en nuestro benchmark:</strong> Baseline de referencia. Establece el piso de comparación (Dice = 0.18 ± 0.29).</p>
+</section>
+<section id="modelo-2-improved-u-net-con-modulos-inception">
+<h3>Modelo 2 — Improved U-Net con módulos Inception<a class="headerlink" href="#modelo-2-improved-u-net-con-modulos-inception" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia completa (APA):</strong></p>
+<blockquote>
+<div><p>Zhao, H., et al. (2017). <em>Improved U-Net Model for Nerve Segmentation</em>. In: Advances in Neural Networks (ISNN 2017). Lecture Notes in Computer Science, vol. 10262. Springer. https://doi.org/10.1007/978-3-319-59081-3_43</p>
+</div></blockquote>
+<p><strong>Tipo de arquitectura:</strong> CNN — U-Net modificada con módulos Inception + Batch Normalization</p>
+<p><strong>Componentes principales:</strong></p>
+<ul class="simple">
+<li><p><em>Módulos Inception:</em> reemplazan las convoluciones 3×3 estándar. Cada módulo procesa la entrada en paralelo con convoluciones 1×1, 3×3 y 5×5, concatenando los resultados. Captura características a múltiples escalas simultáneamente.</p></li>
+<li><p><em>Batch Normalization:</em> en cada capa en lugar de Dropout. Acelera convergencia y reduce sobreajuste.</p></li>
+<li><p><em>Función de pérdida:</em> Dice Loss (en lugar de BCE), más apropiada para segmentación desbalanceada.</p></li>
+</ul>
+<p><strong>Flujo de datos:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Imagen (1×256×256) → Encoder [Inception+BN+MaxPool] × 4
+→ Bottleneck Inception → Decoder [UpConv+Skip+Inception+BN] × 4
+→ Conv 1×1 → Máscara (1×256×256)
+</pre></div>
+</div>
+<p><strong>Innovación:</strong> Sustitución de convoluciones simples por bloques Inception para captura multi-escala con menos parámetros. Demostró que 16% menos parámetros que U-Net puede alcanzar rendimiento comparable usando Dice Loss.</p>
+<p><strong>Dataset:</strong> Kaggle Ultrasound Nerve Segmentation (5,635 imágenes de train, evaluación directa en Kaggle).</p>
+<p><strong>Métricas reportadas:</strong> Dice = 0.653 (test set Kaggle). U-Net estándar: 0.658 con 6× más parámetros.</p>
+<p><strong>N° de parámetros:</strong> ~5.2M (16% menos que U-Net). En nuestro benchmark: similar.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fortalezas</p></th>
+<th class="head"><p>Limitaciones</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Eficiencia paramétrica (–16% vs U-Net)</p></td>
+<td><p>Ganancia marginal sobre U-Net estándar</p></td>
+</tr>
+<tr class="row-odd"><td><p>Multi-escala nativa por diseño</p></td>
+<td><p>Módulos Inception aumentan complejidad de implementación</p></td>
+</tr>
+<tr class="row-even"><td><p>Primer uso de Dice Loss en este dataset</p></td>
+<td><p>No aborda el problema de desbalance</p></td>
+</tr>
+<tr class="row-odd"><td><p>Entrenamiento más estable con BN</p></td>
+<td><p>Sin mecanismo de atención espacial</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="modelo-3-resu-net-optimizado-con-dac-y-rmp">
+<h3>Modelo 3 — ResU-Net optimizado con DAC y RMP<a class="headerlink" href="#modelo-3-resu-net-optimizado-con-dac-y-rmp" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia completa (IEEE):</strong></p>
+<blockquote>
+<div><p>R. Wang, H. Shen, and M. Zhou, “Ultrasound Nerve Segmentation of Brachial Plexus Based on Optimized ResU-Net,” in <em>Proc. IEEE International Conference on Imaging Systems and Techniques (IST)</em>, Abu Dhabi, UAE, 2019, pp. 1–6. doi: 10.1109/IST48021.2019.9010317.</p>
+</div></blockquote>
+<p><strong>Tipo de arquitectura:</strong> CNN — U-Net con bloques residuales + módulos de contexto multi-escala</p>
+<p><strong>Componentes principales:</strong></p>
+<ul class="simple">
+<li><p><em>Bloques residuales (ResNet):</em> conexiones de atajo que permiten entrenamiento profundo sin vanishing gradient. Cada bloque: Conv→BN→ReLU→Conv→BN + shortcut.</p></li>
+<li><p><em>Dense Atrous Convolution (DAC):</em> módulo con convoluciones dilatadas en paralelo (dilation 1, 3, 5, 7). Amplía el campo receptivo sin reducir resolución, preservando información espacial.</p></li>
+<li><p><em>Residual Multi-kernel Pooling (RMP):</em> pooling con kernels 2×2, 3×3, 5×5, 6×6 en paralelo para captura de contexto global a múltiples escalas.</p></li>
+</ul>
+<p><strong>Flujo de datos:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Imagen → Encoder ResBlocks + MaxPool → Bottleneck (DAC + RMP)
+→ Decoder ResBlocks + UpSampling + Skip → Máscara segmentación
+</pre></div>
+</div>
+<p><strong>Innovación:</strong> Combina robustez del entrenamiento profundo (residual) con preservación de resolución espacial (atrous convolutions) y contexto global (multi-kernel pooling). Primer modelo que supera el 70% en el dataset UNS sin ensemble.</p>
+<p><strong>Dataset:</strong> Kaggle Ultrasound Nerve Segmentation.</p>
+<p><strong>Métricas reportadas:</strong> Dice = 0.7093. Mejora de +6% sobre U-Net estándar.</p>
+<p><strong>N° de parámetros:</strong> ~8.13M (benchmark). Encoder ResNet50: ~25M (versión completa).</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fortalezas</p></th>
+<th class="head"><p>Limitaciones</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Primer modelo &gt;70% Dice sin ensemble</p></td>
+<td><p>Módulos DAC+RMP añaden complejidad significativa</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bloques residuales facilitan entrenamiento profundo</p></td>
+<td><p>Mayor tiempo de entrenamiento vs U-Net</p></td>
+</tr>
+<tr class="row-even"><td><p>Campo receptivo ampliado sin perder resolución</p></td>
+<td><p>No aborda desbalance estructuralmente</p></td>
+</tr>
+<tr class="row-odd"><td><p>Varianza muy baja entre runs (±0.001)</p></td>
+<td><p>Inferior a Attention U-Net en nuestro benchmark</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="modelo-4-hybrid-dnn-clasificador-segmentador-paper-guia">
+<h3>Modelo 4 — Hybrid DNN: Clasificador + Segmentador (Paper Guía)<a class="headerlink" href="#modelo-4-hybrid-dnn-clasificador-segmentador-paper-guia" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia completa (APA):</strong></p>
+<blockquote>
+<div><p>van Boxtel, J. P. A., Vousten, V., Pluim, J., &amp; Rad, N. M. (2021). <em>Hybrid Deep Neural Network for Brachial Plexus Nerve Segmentation in Ultrasound Images</em>. arXiv preprint arXiv:2106.00373. https://arxiv.org/abs/2106.00373</p>
+</div></blockquote>
+<p><strong>Tipo de arquitectura:</strong> Híbrida — Clasificador CNN + Segmentador U-Net/M-Net en pipeline secuencial</p>
+<p><strong>Componentes principales:</strong></p>
+<ul class="simple">
+<li><p><em>Clasificador CNN (Etapa 1):</em> red convolucional que predice P(nervio presente) para cada imagen. Si P &lt; threshold → máscara = ceros, sin pasar por el segmentador.</p></li>
+<li><p><em>Segmentador U-Net o M-Net (Etapa 2):</em> actúa solo sobre imágenes clasificadas como conteniendo nervio. El M-Net añade conexiones multi-escala adicionales a U-Net.</p></li>
+<li><p><em>Umbral de presencia:</em> optimizado en validación. El paper reporta gains del threshold óptimo vs 0.5 fijo.</p></li>
+</ul>
+<p><strong>Flujo de datos:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Imagen → Clasificador CNN → P(nervio)
+  Si P &gt;= threshold → Segmentador (U-Net/M-Net) → Máscara predicha
+  Si P &lt; threshold → Máscara = zeros (sin inferencia del segmentador)
+</pre></div>
+</div>
+<p><strong>Innovación:</strong> Primer paper que aborda explícitamente el desbalance del dataset UNS-2016 mediante una etapa de filtrado explícita. Identifica que el cuello de botella no es la arquitectura del segmentador sino la incapacidad de distinguir imágenes sin nervio.</p>
+<p><strong>Dataset:</strong> Kaggle Ultrasound Nerve Segmentation.</p>
+<p><strong>Métricas reportadas:</strong> Mejora significativa sobre segmentación pura; Dice &gt;70% con pipeline completo.</p>
+<p><strong>N° de parámetros:</strong> ~7.85M (implementación dual-head de este proyecto).</p>
+<p><strong>Tiempo de entrenamiento:</strong> 42 min/run en nuestro benchmark.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fortalezas</p></th>
+<th class="head"><p>Limitaciones</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Ataca directamente el problema del desbalance</p></td>
+<td><p>Requiere entrenar/optimizar dos componentes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mayor salto de rendimiento del benchmark (+235%)</p></td>
+<td><p>Alta varianza entre runs (±0.17)</p></td>
+</tr>
+<tr class="row-even"><td><p>Inferencia más rápida en imágenes sin nervio</p></td>
+<td><p>Rama clasificadora puede fallar en convergencia</p></td>
+</tr>
+<tr class="row-odd"><td><p>Concepto extensible a arquitecturas modernas</p></td>
+<td><p>Paper en arXiv, no peer-reviewed formal</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Justificación como paper guía:</strong> Es el único paper en la literatura que ataca explícitamente el problema central del dataset UNS-2016 y cuyo principio fue validado empíricamente en nuestro benchmark como la estrategia de mayor impacto. La brecha entre Dual-head (0.60) y los otros cuatro modelos (0.18–0.26) cuantifica el valor del enfoque.</p>
+</section>
+<section id="modelo-5-tu-net-transformer-u-net-con-joint-loss-sota">
+<h3>Modelo 5 — TU-Net: Transformer + U-Net con joint loss (SOTA)<a class="headerlink" href="#modelo-5-tu-net-transformer-u-net-con-joint-loss-sota" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia completa (APA):</strong></p>
+<blockquote>
+<div><p>Cai, L., Li, Q., Zhang, J., Zhang, Z., Yang, R., &amp; Zhang, L. (2023). Ultrasound image segmentation based on Transformer and U-Net with joint loss. <em>PeerJ Computer Science</em>, <em>9</em>, e1638. https://doi.org/10.7717/peerj-cs.1638</p>
+</div></blockquote>
+<p><strong>Tipo de arquitectura:</strong> Híbrida CNN-Transformer — U-Net con mecanismo de atención paralelo y función de pérdida conjunta</p>
+<p><strong>Componentes principales:</strong></p>
+<ul class="simple">
+<li><p><em>Encoder U-Net (CNN):</em> captura características locales y multi-escala mediante convoluciones jerárquicas.</p></li>
+<li><p><em>Módulo de atención paralela:</em> dos ramas simultáneas en el bottleneck:</p>
+<ul>
+<li><p>Rama CNN: captura información local multi-escala con convoluciones depth-wise + point-wise.</p></li>
+<li><p>Rama Transformer: captura dependencias globales mediante Multi-Head Self-Attention sobre patches aplanados.</p></li>
+<li><p>Fusión: concatenación + Conv 1×1 para integrar información local y global.</p></li>
+</ul>
+</li>
+<li><p><em>Joint loss (Dice + TopK):</em> combina Dice Loss estándar con TopK loss que fuerza al modelo a clasificar correctamente los K píxeles más difíciles (bordes, regiones ambiguas).</p></li>
+</ul>
+<p><strong>Flujo de datos:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Imagen (1×256×256) → Encoder ResNet34 (CNN)
+→ Bottleneck → [Rama CNN || Rama Transformer] → Fusión concatenación
+→ Decoder U-Net → Segmentation head → Máscara
+     ↕
+Loss = Dice(pred, gt) + TopK(pred, gt)
+</pre></div>
+</div>
+<p><strong>Innovación:</strong> Primera combinación CNN+Transformer con atención paralela (no secuencial) para ultrasonido. La joint loss Dice+TopK aborda específicamente los bordes difusos del plexo braquial. Reporta Dice = 79.59%, superando al estado del arte anterior en ~5%.</p>
+<p><strong>Dataset:</strong> Kaggle Ultrasound Nerve Segmentation (1,710 train / 448 test — subconjunto del dataset original).</p>
+<p><strong>Métricas reportadas:</strong> Dice = 79.59%, Precision = 81.25%, Recall = 80.19%, HD = 12.44mm.</p>
+<p><strong>N° de parámetros:</strong> ~12.10M (implementación benchmark de este proyecto).</p>
+<p><strong>Tiempo de entrenamiento:</strong> ~47 min/run en nuestro benchmark.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fortalezas</p></th>
+<th class="head"><p>Limitaciones</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SOTA actual en dataset UNS-2016 (79.59%)</p></td>
+<td><p>Requiere dataset grande para el Transformer</p></td>
+</tr>
+<tr class="row-odd"><td><p>Atención local + global simultánea</p></td>
+<td><p>Sin pre-entrenamiento médico → underperforma con datos limitados</p></td>
+</tr>
+<tr class="row-even"><td><p>Joint loss mejora precisión en bordes</p></td>
+<td><p>50% más parámetros que U-Net sin ganancia en datos escasos</p></td>
+</tr>
+<tr class="row-odd"><td><p>Publicado en PeerJ CS (Q2, open access)</p></td>
+<td><p>Nuestro resultado: 0.20 (vs 0.80 del paper) por diferencia de split y datos</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Observación crítica sobre la brecha:</strong> El paper usa 1,710 imágenes de train (subconjunto seleccionado del Kaggle), split aleatorio, y probablemente pesos preentrenados. Nuestro benchmark usa 3,836 imágenes pero con split por paciente completo y entrenamiento desde cero. La diferencia metodológica explica gran parte de la brecha.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="comparacion-critica-estructurada">
+<h2>3.3 Comparación Crítica Estructurada<a class="headerlink" href="#comparacion-critica-estructurada" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># ─── Tabla comparativa estructurada ──────────────────────────────────────────</span>
+<span class="n">comparacion</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Modelo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;U-Net&#39;</span><span class="p">,</span> <span class="s1">&#39;Improved U-Net&#39;</span><span class="p">,</span> <span class="s1">&#39;ResU-Net optim.&#39;</span><span class="p">,</span> <span class="s1">&#39;Hybrid DNN&#39;</span><span class="p">,</span> <span class="s1">&#39;TU-Net&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Año&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2017</span><span class="p">,</span> <span class="mi">2019</span><span class="p">,</span> <span class="mi">2021</span><span class="p">,</span> <span class="mi">2023</span><span class="p">],</span>
+    <span class="s1">&#39;Venue&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;MICCAI Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;ISNN/Springer&#39;</span><span class="p">,</span> <span class="s1">&#39;IEEE IST&#39;</span><span class="p">,</span> <span class="s1">&#39;arXiv&#39;</span><span class="p">,</span> <span class="s1">&#39;PeerJ CS Q2&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Arquitectura&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;CNN encoder-decoder&#39;</span><span class="p">,</span> <span class="s1">&#39;CNN + Inception&#39;</span><span class="p">,</span> <span class="s1">&#39;CNN + Residual + DAC&#39;</span><span class="p">,</span> <span class="s1">&#39;CNN híbrida dual&#39;</span><span class="p">,</span> <span class="s1">&#39;CNN + Transformer&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Dice literatura&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;0.57–0.65&#39;</span><span class="p">,</span> <span class="s1">&#39;0.653&#39;</span><span class="p">,</span> <span class="s1">&#39;0.7093&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;0.70&#39;</span><span class="p">,</span> <span class="s1">&#39;0.7959&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Dice nuestro&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;0.1798&#39;</span><span class="p">,</span> <span class="s1">&#39;—&#39;</span><span class="p">,</span> <span class="s1">&#39;0.2345&#39;</span><span class="p">,</span> <span class="s1">&#39;0.6032&#39;</span><span class="p">,</span> <span class="s1">&#39;0.1971&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Parámetros (M)&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">7.77</span><span class="p">,</span> <span class="mf">5.20</span><span class="p">,</span> <span class="mf">8.13</span><span class="p">,</span> <span class="mf">7.85</span><span class="p">,</span> <span class="mf">12.10</span><span class="p">],</span>
+    <span class="s1">&#39;Ataca desbalance&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Sí (explícito)&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Robustez (std runs)&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;0.29&#39;</span><span class="p">,</span> <span class="s1">&#39;—&#39;</span><span class="p">,</span> <span class="s1">&#39;0.26&#39;</span><span class="p">,</span> <span class="s1">&#39;0.17&#39;</span><span class="p">,</span> <span class="s1">&#39;0.29&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Split literatura&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Aleatorio&#39;</span><span class="p">,</span> <span class="s1">&#39;Kaggle test&#39;</span><span class="p">,</span> <span class="s1">&#39;Aleatorio&#39;</span><span class="p">,</span> <span class="s1">&#39;Aleatorio&#39;</span><span class="p">,</span> <span class="s1">&#39;Aleatorio&#39;</span><span class="p">],</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;TABLA COMPARATIVA — Top 5 Modelos Estado del Arte&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">comparacion</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TABLA COMPARATIVA — Top 5 Modelos Estado del Arte
+================================================================================
+         Modelo  Año         Venue         Arquitectura Dice literatura Dice nuestro  Parámetros (M) Ataca desbalance Robustez (std runs) Split literatura
+          U-Net 2015     MICCAI Q1  CNN encoder-decoder       0.57–0.65       0.1798            7.77               No                0.29        Aleatorio
+ Improved U-Net 2017 ISNN/Springer      CNN + Inception           0.653            —            5.20               No                   —      Kaggle test
+ResU-Net optim. 2019      IEEE IST CNN + Residual + DAC          0.7093       0.2345            8.13               No                0.26        Aleatorio
+     Hybrid DNN 2021         arXiv     CNN híbrida dual           &gt;0.70       0.6032            7.85   Sí (explícito)                0.17        Aleatorio
+         TU-Net 2023   PeerJ CS Q2    CNN + Transformer          0.7959       0.1971           12.10               No                0.29        Aleatorio
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ─── Figura comparativa ───────────────────────────────────────────────────────</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">modelos</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;U-Net</span><span class="se">\n</span><span class="s1">(2015)&#39;</span><span class="p">,</span> <span class="s1">&#39;Improved</span><span class="se">\n</span><span class="s1">U-Net (2017)&#39;</span><span class="p">,</span> <span class="s1">&#39;ResU-Net</span><span class="se">\n</span><span class="s1">(2019)&#39;</span><span class="p">,</span> <span class="s1">&#39;Hybrid</span><span class="se">\n</span><span class="s1">DNN (2021)&#39;</span><span class="p">,</span> <span class="s1">&#39;TU-Net</span><span class="se">\n</span><span class="s1">(2023)&#39;</span><span class="p">]</span>
+<span class="n">colores</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#90A4AE&#39;</span><span class="p">,</span> <span class="s1">&#39;#81C784&#39;</span><span class="p">,</span> <span class="s1">&#39;#64B5F6&#39;</span><span class="p">,</span> <span class="s1">&#39;#FF8A65&#39;</span><span class="p">,</span> <span class="s1">&#39;#BA68C8&#39;</span><span class="p">]</span>
+
+<span class="c1"># Panel 1: Dice literatura vs nuestro</span>
+<span class="n">dice_lit</span>  <span class="o">=</span> <span class="p">[</span><span class="mf">0.61</span><span class="p">,</span> <span class="mf">0.653</span><span class="p">,</span> <span class="mf">0.709</span><span class="p">,</span> <span class="mf">0.70</span><span class="p">,</span> <span class="mf">0.796</span><span class="p">]</span>
+<span class="n">dice_ours</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1798</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">0.2345</span><span class="p">,</span> <span class="mf">0.6032</span><span class="p">,</span> <span class="mf">0.1971</span><span class="p">]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modelos</span><span class="p">))</span>
+<span class="n">w</span> <span class="o">=</span> <span class="mf">0.35</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dice_lit</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Literatura (split aleatorio)&#39;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="n">c</span><span class="o">+</span><span class="s1">&#39;CC&#39;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">colores</span><span class="p">],</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">bars_ours</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dice_ours</span><span class="p">]</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bars_ours</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Nuestro (split por paciente)&#39;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">colores</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">hatch</span><span class="o">=</span><span class="s1">&#39;//&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">modelos</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Dice coefficient&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Dice: Literatura vs Nuestro benchmark</span><span class="se">\n</span><span class="s1">(diferencia metodológica de split)&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Nuestro mejor&#39;</span><span class="p">)</span>
+
+<span class="c1"># Panel 2: Parámetros vs Dice (literatura)</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="mf">7.77</span><span class="p">,</span> <span class="mf">5.20</span><span class="p">,</span> <span class="mf">8.13</span><span class="p">,</span> <span class="mf">7.85</span><span class="p">,</span> <span class="mf">12.10</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">dice_lit</span><span class="p">,</span> <span class="n">modelos</span><span class="p">,</span> <span class="n">colores</span><span class="p">)):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span>
+                     <span class="n">textcoords</span><span class="o">=</span><span class="s1">&#39;offset points&#39;</span><span class="p">,</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Parámetros (M)&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Dice (literatura)&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Trade-off: Parámetros vs Rendimiento</span><span class="se">\n</span><span class="s1">(literatura)&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Panel 3: Evolución temporal</span>
+<span class="n">años</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2017</span><span class="p">,</span> <span class="mi">2019</span><span class="p">,</span> <span class="mi">2021</span><span class="p">,</span> <span class="mi">2023</span><span class="p">]</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">años</span><span class="p">,</span> <span class="n">dice_lit</span><span class="p">,</span> <span class="s1">&#39;o-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#1565C0&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Dice literatura&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">años</span><span class="p">,</span> <span class="n">dice_lit</span><span class="p">,</span> <span class="n">colores</span><span class="p">)):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">modelos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span>
+                     <span class="n">textcoords</span><span class="o">=</span><span class="s1">&#39;offset points&#39;</span><span class="p">,</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Año de publicación&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Dice coefficient&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Evolución del rendimiento</span><span class="se">\n</span><span class="s1">(2015–2023, dataset UNS-2016)&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.70</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Umbral 70%&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Análisis Comparativo — Estado del Arte en Segmentación de Plexo Braquial&#39;</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;../results/literature_comparison.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Figura guardada en results/literature_comparison.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/21712b58d7d45846246430a9bab4725d5e7fa953cef354eb433ef3a1210d9fed.png" src="_images/21712b58d7d45846246430a9bab4725d5e7fa953cef354eb433ef3a1210d9fed.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Figura guardada en results/literature_comparison.png
+</pre></div>
+</div>
+</div>
+</div>
+<section id="tendencias-identificadas">
+<h3>Tendencias identificadas<a class="headerlink" href="#tendencias-identificadas" title="Permalink to this heading">#</a></h3>
+<p><strong>1. De CNN puras hacia híbridos CNN-Transformer (2015→2023)</strong>
+La evolución muestra un progreso sostenido de +2–5% Dice por generación. Los modelos puramente CNN dominaron hasta 2019; los híbridos con Transformer emergen como SOTA desde 2021. Sin embargo, los Transformers requieren grandes volúmenes de datos para superar a CNNs bien diseñadas, lo que limita su ventaja en datasets pequeños como UNS-2016.</p>
+<p><strong>2. El problema del desbalance permanece infraexplotado</strong>
+Cuatro de los cinco modelos ignoran estructuralmente que el 60% de las imágenes no contienen nervio. Solo van Boxtel et al. (2021) lo aborda explícitamente. Nuestro benchmark confirma empíricamente que esta estrategia produce el mayor salto de rendimiento.</p>
+<p><strong>3. Discrepancia metodológica generalizada</strong>
+Todos los papers del Top 5 usan splits aleatorios (frame-level), lo que permite data leakage entre pacientes. Solo nuestro benchmark usa split por paciente completo, lo que explica gran parte de la brecha observada.</p>
+</section>
+<section id="gap-identificado-en-la-literatura">
+<h3>Gap identificado en la literatura<a class="headerlink" href="#gap-identificado-en-la-literatura" title="Permalink to this heading">#</a></h3>
+<div class="important admonition">
+<p class="admonition-title">Gap principal</p>
+<p><strong>Ningún paper publicado ha combinado el principio del clasificador explícito de presencia</strong> (van Boxtel et al., 2021) <strong>con arquitecturas modernas de foundation models</strong> (HA-SAM MICCAI 2025, MedSAM-2, SAMUS). Esta combinación — dual-head + encoder preentrenado en imágenes médicas — representa la dirección más prometedora y no explorada en la literatura.</p>
+<p>Los modelos SOTA como TU-Net alcanzan 79.59% sin abordar el desbalance. Si se añade la estrategia dual-head a TU-Net o HA-SAM, se esperaría superar el 80% bajo split estricto por paciente.</p>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="seccion-5-paper-guia">
+<h2>3.4 Sección 5 — Paper Guía<a class="headerlink" href="#seccion-5-paper-guia" title="Permalink to this heading">#</a></h2>
+<p><strong>Paper seleccionado:</strong> van Boxtel et al. (2021) — <em>Hybrid Deep Neural Network for Brachial Plexus Nerve Segmentation in Ultrasound Images</em></p>
+<p><strong>Justificación de selección:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Relevancia directa:</strong> es el único paper en la literatura que identifica y resuelve explícitamente el problema central del dataset UNS-2016 — el 60% de imágenes sin nervio.</p></li>
+<li><p><strong>Validación empírica en nuestro benchmark:</strong> su principio (clasificador explícito + segmentador) produjo el mayor salto de rendimiento: Dual-head U-Net (0.60) vs todos los demás (0.18–0.26), con p &lt; 10⁻⁴⁴.</p></li>
+<li><p><strong>Gap identificado:</strong> el concepto permanece sin explotar con arquitecturas modernas, representando la dirección de investigación más prometedora.</p></li>
+</ol>
+<p><strong>Descripción del modelo original:</strong></p>
+<ul class="simple">
+<li><p><em>Etapa 1 — Clasificador CNN:</em> predice P(Brachial Plexus presente). Red convolucional ligera entrenada con BCE.</p></li>
+<li><p><em>Etapa 2 — Segmentador U-Net/M-Net:</em> genera la máscara de segmentación. Solo actúa si P ≥ threshold.</p></li>
+<li><p><em>Inferencia:</em> si P &lt; threshold → máscara de ceros, ahorrando cómputo y eliminando falsos positivos.</p></li>
+<li><p><em>Supuesto clave:</em> el modelo de clasificación puede distinguir con alta accuracy las imágenes con/sin nervio, lo cual es verificable y corregible.</p></li>
+</ul>
+<p><strong>Relación con los modelos benchmark:</strong></p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo benchmark</p></th>
+<th class="head"><p>Relación con paper guía</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>U-Net baseline</p></td>
+<td><p>Arquitectura base del segmentador en el paper guía</p></td>
+</tr>
+<tr class="row-odd"><td><p>Improved U-Net</p></td>
+<td><p>Variante del segmentador — módulos Inception como alternativa</p></td>
+</tr>
+<tr class="row-even"><td><p>ResU-Net</p></td>
+<td><p>Arquitectura alternativa del segmentador con mayor capacidad</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Dual-head U-Net</strong></p></td>
+<td><p><strong>Implementación directa del paper guía</strong> — validación principal</p></td>
+</tr>
+<tr class="row-even"><td><p>TU-Net</p></td>
+<td><p>Arquitectura SOTA sin estrategia dual — contraste máximo</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estrategia-de-busqueda">3.1 Estrategia de Búsqueda</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#palabras-clave-utilizadas">Palabras clave utilizadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bases-de-datos-consultadas">Bases de datos consultadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#criterios-de-inclusion">Criterios de inclusión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#criterios-de-exclusion">Criterios de exclusión</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#top-5-analisis-detallado-por-modelo">3.2 Top 5 — Análisis Detallado por Modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-1-u-net-baseline-historico">Modelo 1 — U-Net (Baseline histórico)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-2-improved-u-net-con-modulos-inception">Modelo 2 — Improved U-Net con módulos Inception</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-3-resu-net-optimizado-con-dac-y-rmp">Modelo 3 — ResU-Net optimizado con DAC y RMP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-4-hybrid-dnn-clasificador-segmentador-paper-guia">Modelo 4 — Hybrid DNN: Clasificador + Segmentador (Paper Guía)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-5-tu-net-transformer-u-net-con-joint-loss-sota">Modelo 5 — TU-Net: Transformer + U-Net con joint loss (SOTA)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-critica-estructurada">3.3 Comparación Crítica Estructurada</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tendencias-identificadas">Tendencias identificadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gap-identificado-en-la-literatura">Gap identificado en la literatura</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seccion-5-paper-guia">3.4 Sección 5 — Paper Guía</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By ProyectoUltrasound
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

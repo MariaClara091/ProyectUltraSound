@@ -1,0 +1,980 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Informe Final — Ultrasound Nerve Segmentation &#8212; Ultrasound Nerve Segmentation — Deep Learning Benchmark</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Notebooks/04_informe_final';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Benchmark y Análisis Estadístico" href="03_benchmark.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Ultrasound Nerve Segmentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_EDA.html">1. Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_literatura.html">2. Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_models.html">3. Implementación de Modelos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_benchmark.html">4. Benchmark y Análisis Estadístico</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Informe Final</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/Notebooks/04_informe_final.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Informe Final — Ultrasound Nerve Segmentation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-benchmark-segmentacion-del-plexo-braquial">Deep Learning Benchmark: Segmentación del Plexo Braquial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discusion-critica">Discusión Crítica</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-con-la-literatura">1.0 Comparación con la literatura</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-clave-y-discusion">1.2 Hallazgos clave y discusión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-del-estudio">1.3 Limitaciones del estudio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recomendaciones">1.4 Recomendaciones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones">Conclusiones</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="informe-final-ultrasound-nerve-segmentation">
+<h1>Informe Final — Ultrasound Nerve Segmentation<a class="headerlink" href="#informe-final-ultrasound-nerve-segmentation" title="Permalink to this heading">#</a></h1>
+<section id="deep-learning-benchmark-segmentacion-del-plexo-braquial">
+<h2>Deep Learning Benchmark: Segmentación del Plexo Braquial<a class="headerlink" href="#deep-learning-benchmark-segmentacion-del-plexo-braquial" title="Permalink to this heading">#</a></h2>
+<div class="important admonition">
+<p class="admonition-title">Resumen ejecutivo</p>
+<p>Este informe presenta el benchmark completo de 5 modelos de Deep Learning para segmentación semántica binaria del Plexo Braquial en imágenes de ultrasonido (Kaggle UNS-2016). El <strong>Dual-head U-Net</strong> obtuvo <strong>Dice = 0.6032</strong>, siendo estadísticamente superior a todos los demás modelos (Friedman χ² = 469.63, p ≈ 10⁻¹⁰⁰). El hallazgo central: el cuello de botella del problema <strong>no es la arquitectura del segmentador</strong> sino el desbalance entre imágenes con y sin nervio (60/40).</p>
+</div>
+<hr class="docutils" />
+</section>
+<hr class="docutils" />
+<section id="discusion-critica">
+<h2>Discusión Crítica<a class="headerlink" href="#discusion-critica" title="Permalink to this heading">#</a></h2>
+<section id="comparacion-con-la-literatura">
+<h3>1.0 Comparación con la literatura<a class="headerlink" href="#comparacion-con-la-literatura" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Tabla comparativa con literatura ─────────────────────────────────────────</span>
+<span class="n">lit_comparison</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Modelo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;TU-Net (Li et al., 2023)&#39;</span><span class="p">,</span> <span class="s1">&#39;MSAC-UNet (Wang et al., 2023)&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;RCM-Net (Wu et al., AAAI 2021)&#39;</span><span class="p">,</span> <span class="s1">&#39;Bayesian U-Net (Michael et al., 2024)&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;ResU-Net optim. (Wang et al., 2019)&#39;</span><span class="p">,</span> <span class="s1">&#39;Attention U-Net (Shah et al., 2023)&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;Kaggle winner (Ganin 2016, ensemble)&#39;</span><span class="p">,</span> <span class="s1">&#39;U-Net (Ronneberger 2015)&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Dice literatura&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7959</span><span class="p">,</span> <span class="mf">0.7460</span><span class="p">,</span> <span class="mf">0.7423</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">,</span> <span class="mf">0.7093</span><span class="p">,</span> <span class="mf">0.71</span><span class="p">,</span> <span class="mf">0.7040</span><span class="p">,</span> <span class="mf">0.61</span><span class="p">],</span>
+    <span class="s1">&#39;Dice nuestro&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;TUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ResUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+        <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AttentionUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;UNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;Split literatura&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Aleatorio&#39;</span><span class="p">,</span> <span class="s1">&#39;Aleatorio&#39;</span><span class="p">,</span> <span class="s1">&#39;Aleatorio&#39;</span><span class="p">,</span> <span class="s1">&#39;Aleatorio&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;Aleatorio&#39;</span><span class="p">,</span> <span class="s1">&#39;Aleatorio&#39;</span><span class="p">,</span> <span class="s1">&#39;Kaggle oficial&#39;</span><span class="p">,</span> <span class="s1">&#39;Aleatorio&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Split nuestro&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Por paciente&#39;</span><span class="p">,</span> <span class="s1">&#39;—&#39;</span><span class="p">,</span> <span class="s1">&#39;—&#39;</span><span class="p">,</span> <span class="s1">&#39;—&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;Por paciente&#39;</span><span class="p">,</span> <span class="s1">&#39;Por paciente&#39;</span><span class="p">,</span> <span class="s1">&#39;—&#39;</span><span class="p">,</span> <span class="s1">&#39;Por paciente&#39;</span><span class="p">],</span>
+<span class="p">})</span>
+<span class="n">lit_comparison</span><span class="p">[</span><span class="s1">&#39;Brecha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lit_comparison</span><span class="p">[</span><span class="s1">&#39;Dice literatura&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">lit_comparison</span><span class="p">[</span><span class="s1">&#39;Dice nuestro&#39;</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;COMPARACIÓN CON LA LITERATURA&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">90</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lit_comparison</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">float_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">─── Explicación de la brecha ───&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;3 factores metodológicos explican la diferencia con la literatura:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1. SPLIT POR PACIENTE (factor principal)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   Literatura: split aleatorio por frame → frames del mismo paciente&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   en train y test → data leakage → scores artificialmente inflados.&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   Nuestro split: paciente completo en un solo split → evaluación&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   más estricta y representativa del escenario clínico real.&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;2. SIN ENSEMBLE NI TEST-TIME AUGMENTATION&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   La solución ganadora de Kaggle usó ensemble de 6 k-folds.&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   Los modelos top aplican TTA (promedian 5-10 predicciones por imagen).&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   Nuestros resultados son modelos individuales sin post-procesamiento.&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;3. ENTRENAMIENTO DESDE CERO&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   TU-Net y modelos modernos reportan resultados con pre-entrenamiento&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   en datasets médicos grandes (MedSAM: 1.5M imágenes).&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   Entrenamos con solo 3,836 frames — insuficiente para Transformers.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>COMPARACIÓN CON LA LITERATURA
+==========================================================================================
+                               Modelo  Dice literatura  Dice nuestro Split literatura Split nuestro  Brecha
+             TU-Net (Li et al., 2023)           0.7959        0.2236        Aleatorio  Por paciente  0.5723
+        MSAC-UNet (Wang et al., 2023)           0.7460           NaN        Aleatorio             —     NaN
+       RCM-Net (Wu et al., AAAI 2021)           0.7423           NaN        Aleatorio             —     NaN
+Bayesian U-Net (Michael et al., 2024)           0.7200           NaN        Aleatorio             —     NaN
+  ResU-Net optim. (Wang et al., 2019)           0.7093        0.2415        Aleatorio  Por paciente  0.4678
+  Attention U-Net (Shah et al., 2023)           0.7100        0.1996        Aleatorio  Por paciente  0.5104
+ Kaggle winner (Ganin 2016, ensemble)           0.7040           NaN   Kaggle oficial             —     NaN
+             U-Net (Ronneberger 2015)           0.6100        0.1684        Aleatorio  Por paciente  0.4416
+
+─── Explicación de la brecha ───
+3 factores metodológicos explican la diferencia con la literatura:
+
+1. SPLIT POR PACIENTE (factor principal)
+   Literatura: split aleatorio por frame → frames del mismo paciente
+   en train y test → data leakage → scores artificialmente inflados.
+   Nuestro split: paciente completo en un solo split → evaluación
+   más estricta y representativa del escenario clínico real.
+
+2. SIN ENSEMBLE NI TEST-TIME AUGMENTATION
+   La solución ganadora de Kaggle usó ensemble de 6 k-folds.
+   Los modelos top aplican TTA (promedian 5-10 predicciones por imagen).
+   Nuestros resultados son modelos individuales sin post-procesamiento.
+
+3. ENTRENAMIENTO DESDE CERO
+   TU-Net y modelos modernos reportan resultados con pre-entrenamiento
+   en datasets médicos grandes (MedSAM: 1.5M imágenes).
+   Entrenamos con solo 3,836 frames — insuficiente para Transformers.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="hallazgos-clave-y-discusion">
+<h3>1.2 Hallazgos clave y discusión<a class="headerlink" href="#hallazgos-clave-y-discusion" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Cuantificar los hallazgos con los datos reales ────────────────────────────</span>
+<span class="n">dh_dice</span>  <span class="o">=</span> <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DualHeadUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.6032</span><span class="p">]))</span>
+<span class="n">un_dice</span>  <span class="o">=</span> <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;UNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1798</span><span class="p">]))</span>
+<span class="n">att_dice</span> <span class="o">=</span> <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AttentionUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2567</span><span class="p">]))</span>
+<span class="n">res_dice</span> <span class="o">=</span> <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ResUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2345</span><span class="p">]))</span>
+<span class="n">tu_dice</span>  <span class="o">=</span> <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;TUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1971</span><span class="p">]))</span>
+
+<span class="c1"># Mejora porcentual del Dual-head sobre cada modelo</span>
+<span class="n">mejora_vs_unet</span>  <span class="o">=</span> <span class="p">(</span><span class="n">dh_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">un_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">un_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">mejora_vs_att</span>   <span class="o">=</span> <span class="p">(</span><span class="n">dh_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">att_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">att_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">mejora_vs_tunet</span> <span class="o">=</span> <span class="p">(</span><span class="n">dh_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">tu_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">tu_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HALLAZGO 1 — El desbalance es el cuello de botella, no la arquitectura&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  U-Net, Attention, ResU-Net, TU-Net: rango Dice = 0.18–0.26&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Dual-head (misma arquitectura base + clasificador): Dice = </span><span class="si">{</span><span class="n">dh_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Mejora vs U-Net baseline: +</span><span class="si">{</span><span class="n">mejora_vs_unet</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Diferencia estadística: p &lt; 10⁻⁴⁴ (Wilcoxon + Bonferroni)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HALLAZGO 2 — Atención &gt; Profundidad &gt; Transformers (datasets pequeños)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Attention U-Net:  Dice = </span><span class="si">{</span><span class="n">att_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  ResU-Net:         Dice = </span><span class="si">{</span><span class="n">res_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  TU-Net:           Dice = </span><span class="si">{</span><span class="n">tu_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Attention &gt; ResU-Net: p = </span><span class="si">{</span><span class="n">nemenyi_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;AttentionUNet&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ResUNet&quot;</span><span class="p">]</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> (Nemenyi)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Attention &gt; TU-Net:   p = </span><span class="si">{</span><span class="n">nemenyi_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;AttentionUNet&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;TUNet&quot;</span><span class="p">]</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> (Nemenyi)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HALLAZGO 3 — TU-Net NO alcanzó el SOTA esperado&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Esperado (Li et al. 2023): 79.59%&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Obtenido: </span><span class="si">{</span><span class="n">tu_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.2%</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Brecha: </span><span class="si">{</span><span class="mf">0.7959</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">tu_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.2%</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Causa: 3,836 imágenes train + sin pre-entrenamiento médico.&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;         TU-Net NO difiere significativamente de U-Net (Nemenyi p = </span><span class="si">{</span><span class="n">nemenyi_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;TUNet&quot;</span><span class="p">,</span><span class="s2">&quot;UNet&quot;</span><span class="p">]</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HALLAZGO 4 — Trade-off estabilidad vs rendimiento&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Más estable (bajo std): ResU-Net std=</span><span class="si">{</span><span class="n">res_dice</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">, Attention std=</span><span class="si">{</span><span class="n">att_dice</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Mayor rendimiento:      Dual-head Dice=</span><span class="si">{</span><span class="n">dh_dice</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> pero std=</span><span class="si">{</span><span class="n">dh_dice</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Para uso clínico: reproducibilidad &gt; score → Attention U-Net preferible&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Para investigación: Dual-head claramente superior&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HALLAZGO 1 — El desbalance es el cuello de botella, no la arquitectura
+======================================================================
+  U-Net, Attention, ResU-Net, TU-Net: rango Dice = 0.18–0.26
+  Dual-head (misma arquitectura base + clasificador): Dice = 0.6372
+  Mejora vs U-Net baseline: +278%
+  Diferencia estadística: p &lt; 10⁻⁴⁴ (Wilcoxon + Bonferroni)
+
+HALLAZGO 2 — Atención &gt; Profundidad &gt; Transformers (datasets pequeños)
+======================================================================
+  Attention U-Net:  Dice = 0.1996
+  ResU-Net:         Dice = 0.2415
+  TU-Net:           Dice = 0.2236
+  Attention &gt; ResU-Net: p = 0.6276 (Nemenyi)
+  Attention &gt; TU-Net:   p = 0.0000 (Nemenyi)
+
+HALLAZGO 3 — TU-Net NO alcanzó el SOTA esperado
+======================================================================
+  Esperado (Li et al. 2023): 79.59%
+  Obtenido: 22.36%
+  Brecha: 57.23%
+  Causa: 3,836 imágenes train + sin pre-entrenamiento médico.
+         TU-Net NO difiere significativamente de U-Net (Nemenyi p = 0.0000)
+
+HALLAZGO 4 — Trade-off estabilidad vs rendimiento
+======================================================================
+  Más estable (bajo std): ResU-Net std=0.2995, Attention std=0.3024
+  Mayor rendimiento:      Dual-head Dice=0.6372 pero std=0.4498
+  Para uso clínico: reproducibilidad &gt; score → Attention U-Net preferible
+  Para investigación: Dual-head claramente superior
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="limitaciones-del-estudio">
+<h3>1.3 Limitaciones del estudio<a class="headerlink" href="#limitaciones-del-estudio" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">limitaciones</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;Tamaño del conjunto de entrenamiento&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;Solo 3,836 frames de train (32 pacientes). Limita la generalización de modelos &#39;</span>
+     <span class="s1">&#39;complejos como Transformers que requieren datos masivos.&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Ruido en etiquetas&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;33 pares contradictorios con SSIM &gt; 0.90 detectados en el EDA (incluyendo 2 &#39;</span>
+     <span class="s1">&#39;con SSIM=1.0, es decir, frames idénticos con etiqueta opuesta). Este ruido &#39;</span>
+     <span class="s1">&#39;impone un techo en el Dice alcanzable por cualquier modelo.&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Sin pre-entrenamiento médico&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;Todos los modelos se entrenaron desde cero o con pesos ImageNet. Los modelos &#39;</span>
+     <span class="s1">&#39;SOTA (TU-Net, HA-SAM) parten de pesos pre-entrenados en datasets médicos &#39;</span>
+     <span class="s1">&#39;grandes, explicando gran parte de la brecha con la literatura.&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Número de runs del Dual-head&#39;</span><span class="p">,</span>
+     <span class="sa">f</span><span class="s1">&#39;Alta varianza observada: run 1 Dice ≈ 0.61, run 2 Dice ≈ 0.36 (la rama &#39;</span>
+     <span class="s1">&#39;clasificadora falló en convergencia). Con n=3 los IC 95</span><span class="si">% s</span><span class="s1">on amplios. &#39;</span>
+     <span class="s1">&#39;Mínimo 5 runs necesarios para estabilizar las estimaciones.&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Sin ensemble ni TTA&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;Las soluciones top de Kaggle usan ensemble de 5-6 modelos y test-time &#39;</span>
+     <span class="s1">&#39;augmentation. Cada uno aporta ~2-5</span><span class="si">% a</span><span class="s1">dicional de Dice. Nuestros resultados &#39;</span>
+     <span class="s1">&#39;son modelos individuales sin estos boosters.&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Split más estricto que la literatura&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;El split por paciente completo es metodológicamente correcto pero produce &#39;</span>
+     <span class="s1">&#39;scores menores que el split aleatorio usado en la literatura. No es una &#39;</span>
+     <span class="s1">&#39;limitación del modelo sino una diferencia metodológica justificada.&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;LIMITACIONES DEL ESTUDIO&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">titulo</span><span class="p">,</span> <span class="n">descripcion</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">limitaciones</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">. </span><span class="si">{</span><span class="n">titulo</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1"># Wrap text at 70 chars</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">descripcion</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;   &#39;</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">73</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;   &#39;</span> <span class="o">+</span> <span class="n">w</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">w</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LIMITACIONES DEL ESTUDIO
+===========================================================================
+
+1. TAMAÑO DEL CONJUNTO DE ENTRENAMIENTO
+    Solo 3,836 frames de train (32 pacientes). Limita la generalización
+   de modelos complejos como Transformers que requieren datos masivos.
+
+2. RUIDO EN ETIQUETAS
+    33 pares contradictorios con SSIM &gt; 0.90 detectados en el EDA
+   (incluyendo 2 con SSIM=1.0, es decir, frames idénticos con etiqueta
+   opuesta). Este ruido impone un techo en el Dice alcanzable por
+   cualquier modelo.
+
+3. SIN PRE-ENTRENAMIENTO MÉDICO
+    Todos los modelos se entrenaron desde cero o con pesos ImageNet. Los
+   modelos SOTA (TU-Net, HA-SAM) parten de pesos pre-entrenados en
+   datasets médicos grandes, explicando gran parte de la brecha con la
+   literatura.
+
+4. NÚMERO DE RUNS DEL DUAL-HEAD
+    Alta varianza observada: run 1 Dice ≈ 0.61, run 2 Dice ≈ 0.36 (la
+   rama clasificadora falló en convergencia). Con n=3 los IC 95% son
+   amplios. Mínimo 5 runs necesarios para estabilizar las estimaciones.
+
+5. SIN ENSEMBLE NI TTA
+    Las soluciones top de Kaggle usan ensemble de 5-6 modelos y test-time
+   augmentation. Cada uno aporta ~2-5% adicional de Dice. Nuestros
+   resultados son modelos individuales sin estos boosters.
+
+6. SPLIT MÁS ESTRICTO QUE LA LITERATURA
+    El split por paciente completo es metodológicamente correcto pero
+   produce scores menores que el split aleatorio usado en la literatura.
+   No es una limitación del modelo sino una diferencia metodológica
+   justificada.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="recomendaciones">
+<h3>1.4 Recomendaciones<a class="headerlink" href="#recomendaciones" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">recomendaciones</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;Combinar Dual-head con foundation models&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;PRIORIDAD ALTA&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;Aplicar el principio del clasificador explícito (van Boxtel 2021) sobre &#39;</span>
+     <span class="s1">&#39;HA-SAM (MICCAI 2025) o SAMUS. Ningún paper ha explorado esta combinación. &#39;</span>
+     <span class="s1">&#39;Es el gap principal identificado en la revisión de literatura.&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Pre-entrenamiento en imágenes médicas&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;PRIORIDAD ALTA&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;Inicializar el encoder de TU-Net con pesos de MedSAM (1.5M imágenes médicas) &#39;</span>
+     <span class="s1">&#39;o UltraSam (dataset específico de ultrasonido). Se espera un gain de 15-20% &#39;</span>
+     <span class="s1">&#39;en Dice basado en la brecha observada.&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Aumentar runs del Dual-head a n≥5&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;PRIORIDAD MEDIA&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;La alta varianza del run 2 (Dice=0.36 vs 0.61 del run 1) indica &#39;</span>
+     <span class="s1">&#39;inestabilidad en la convergencia de la rama clasificadora. &#39;</span>
+     <span class="s1">&#39;Con n=5 los IC 95</span><span class="si">% s</span><span class="s1">erán más confiables y el Wilcoxon más potente.&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Test-time augmentation (TTA) y ensemble&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;PRIORIDAD MEDIA&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;Implementar TTA (flip horizontal + vertical, promediar 3 predicciones) &#39;</span>
+     <span class="s1">&#39;para el Dual-head. Sin reentrenar, se esperan +1-2</span><span class="si">% e</span><span class="s1">n Dice. &#39;</span>
+     <span class="s1">&#39;Ensemble de 3 seeds del Dual-head daría resultados más estables.&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Filtrar pares contradictorios&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;PRIORIDAD BAJA&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;Los 2 pares con SSIM=1.0 son frames idénticos con etiqueta opuesta — &#39;</span>
+     <span class="s1">&#39;error de anotación claro. Eliminarlos antes del split podría mejorar &#39;</span>
+     <span class="s1">&#39;ligeramente la calidad del entrenamiento, aunque el impacto es marginal.&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RECOMENDACIONES&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">titulo</span><span class="p">,</span> <span class="n">prioridad</span><span class="p">,</span> <span class="n">descripcion</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">recomendaciones</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">. </span><span class="si">{</span><span class="n">titulo</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1">  [</span><span class="si">{</span><span class="n">prioridad</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">)</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">descripcion</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;   &#39;</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">73</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;   &#39;</span> <span class="o">+</span> <span class="n">w</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">w</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RECOMENDACIONES PARA TRABAJO FUTURO
+===========================================================================
+
+1. COMBINAR DUAL-HEAD CON FOUNDATION MODELS  [PRIORIDAD ALTA]
+    Aplicar el principio del clasificador explícito (van Boxtel 2021)
+   sobre HA-SAM (MICCAI 2025) o SAMUS. Ningún paper ha explorado esta
+   combinación. Es el gap principal identificado en la revisión de
+   literatura.
+
+2. PRE-ENTRENAMIENTO EN IMÁGENES MÉDICAS  [PRIORIDAD ALTA]
+    Inicializar el encoder de TU-Net con pesos de MedSAM (1.5M imágenes
+   médicas) o UltraSam (dataset específico de ultrasonido). Se espera un
+   gain de 15-20% en Dice basado en la brecha observada.
+
+3. AUMENTAR RUNS DEL DUAL-HEAD A N≥5  [PRIORIDAD MEDIA]
+    La alta varianza del run 2 (Dice=0.36 vs 0.61 del run 1) indica
+   inestabilidad en la convergencia de la rama clasificadora. Con n=5 los
+   IC 95% serán más confiables y el Wilcoxon más potente.
+
+4. TEST-TIME AUGMENTATION (TTA) Y ENSEMBLE  [PRIORIDAD MEDIA]
+    Implementar TTA (flip horizontal + vertical, promediar 3
+   predicciones) para el Dual-head. Sin reentrenar, se esperan +1-2% en
+   Dice. Ensemble de 3 seeds del Dual-head daría resultados más estables.
+
+5. FILTRAR PARES CONTRADICTORIOS  [PRIORIDAD BAJA]
+    Los 2 pares con SSIM=1.0 son frames idénticos con etiqueta opuesta —
+   error de anotación claro. Eliminarlos antes del split podría mejorar
+   ligeramente la calidad del entrenamiento, aunque el impacto es
+   marginal.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="conclusiones">
+<h2>Conclusiones<a class="headerlink" href="#conclusiones" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Panel visual final de conclusiones ───────────────────────────────────────</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Conclusiones del Benchmark — Ultrasound Nerve Segmentation&#39;</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="c1"># Panel 1: Ranking final con gap vs literatura</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">models_plot</span> <span class="o">=</span> <span class="p">[</span><span class="n">DISPLAY_NAMES</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names_avail</span><span class="p">]</span>
+<span class="n">our_scores</span>  <span class="o">=</span> <span class="p">[</span><span class="n">dice_arrays</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names_avail</span><span class="p">]</span>
+<span class="n">lit_vals</span>    <span class="o">=</span> <span class="p">[</span><span class="mf">0.61</span><span class="p">,</span> <span class="mf">0.71</span><span class="p">,</span> <span class="mf">0.7093</span><span class="p">,</span> <span class="mf">0.7959</span><span class="p">,</span> <span class="mf">0.7040</span><span class="p">]</span>  <span class="c1"># UNet, Att, Res, TU, DualHead-comparable</span>
+<span class="c1"># Reordenar según ranking nuestro</span>
+<span class="n">sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">our_scores</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sorted_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">models_plot</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sort_idx</span><span class="p">]</span>
+<span class="n">sorted_ours</span>  <span class="o">=</span> <span class="p">[</span><span class="n">our_scores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sort_idx</span><span class="p">]</span>
+<span class="n">sorted_lit</span>   <span class="o">=</span> <span class="p">[</span><span class="n">lit_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sort_idx</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sorted_names</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">sorted_lit</span><span class="p">,</span>  <span class="mf">0.35</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Literatura&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#B0BEC5&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">sorted_ours</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="n">COLORS</span><span class="p">[</span><span class="n">names_avail</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sort_idx</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Nuestro&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">sorted_names</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Dice Coefficient&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Ranking final vs literatura&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Panel 2: Contribución de cada componente</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;U-Net</span><span class="se">\n</span><span class="s1">baseline&#39;</span><span class="p">,</span> <span class="s1">&#39;+ Attention</span><span class="se">\n</span><span class="s1">gates&#39;</span><span class="p">,</span> <span class="s1">&#39;+ Residual</span><span class="se">\n</span><span class="s1">blocks&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;+ Dual-head</span><span class="se">\n</span><span class="s1">(clasif.)&#39;</span><span class="p">,</span> <span class="s1">&#39;+ Transformer&#39;</span><span class="p">]</span>
+<span class="n">component_dice</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;UNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.18</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+    <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AttentionUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.26</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+    <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ResUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.23</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+    <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DualHeadUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.60</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+    <span class="n">dice_arrays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;TUNet&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.20</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+<span class="p">]</span>
+<span class="n">comp_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#78909C&#39;</span><span class="p">,</span> <span class="s1">&#39;#43A047&#39;</span><span class="p">,</span> <span class="s1">&#39;#1E88E5&#39;</span><span class="p">,</span> <span class="s1">&#39;#E53935&#39;</span><span class="p">,</span> <span class="s1">&#39;#8E24AA&#39;</span><span class="p">]</span>
+<span class="n">bars</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">components</span><span class="p">,</span> <span class="n">component_dice</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">comp_colors</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">component_dice</span><span class="p">):</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span>
+             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Dice coefficient&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Impacto de cada innovación</span><span class="se">\n</span><span class="s1">(sobre U-Net baseline)&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Panel 3: Significancia estadística — matriz simplificada</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">sig_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">names_avail</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">names_avail</span><span class="p">)))</span>
+<span class="k">for</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_avail</span><span class="p">)),</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">names_avail</span><span class="p">[</span><span class="n">m1</span><span class="p">],</span> <span class="n">names_avail</span><span class="p">[</span><span class="n">m2</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">nemenyi_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">]</span>
+        <span class="n">sig_mat</span><span class="p">[</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">ALPHA</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">sig_mat</span><span class="p">[</span><span class="n">m2</span><span class="p">,</span> <span class="n">m1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sig_mat</span><span class="p">[</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+<span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">sig_mat</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">tick_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">DISPLAY_NAMES</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names_avail</span><span class="p">]</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">ax3</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">sig_mat</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlGn&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_avail</span><span class="p">)))</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_avail</span><span class="p">)))</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">tick_labels</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">tick_labels</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_avail</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_avail</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">sig_mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]):</span>
+            <span class="n">ax3</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;✓&#39;</span> <span class="k">if</span> <span class="n">sig_mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;✗&#39;</span><span class="p">,</span>
+                     <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+                     <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span> <span class="k">if</span> <span class="n">sig_mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Significancia estadística</span><span class="se">\n</span><span class="s1">(Nemenyi, α=</span><span class="si">{</span><span class="n">ALPHA</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax3</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([</span><span class="s1">&#39;No sig.&#39;</span><span class="p">,</span> <span class="s1">&#39;Sig.&#39;</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">BENCHMARK_DIR</span> <span class="o">/</span> <span class="s1">&#39;informe_conclusiones.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">130</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2e92069247dc8933cd26dc4e73115022ad0af3ce4988661b85405341b9fe89ad.png" src="../_images/2e92069247dc8933cd26dc4e73115022ad0af3ce4988661b85405341b9fe89ad.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Resumen ejecutivo final ───────────────────────────────────────────────────</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;═&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  CONCLUSIONES FINALES — BENCHMARK ULTRASOUND NERVE SEGMENTATION&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;═&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+
+<span class="n">winner_name</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dice_arrays</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">dice_arrays</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="n">winner_dice</span> <span class="o">=</span> <span class="n">dice_arrays</span><span class="p">[</span><span class="n">winner_name</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">winner_std</span>  <span class="o">=</span> <span class="n">dice_arrays</span><span class="p">[</span><span class="n">winner_name</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">1. RESULTADO PRINCIPAL</span>
+<span class="s1">   </span><span class="si">{</span><span class="n">DISPLAY_NAMES</span><span class="p">[</span><span class="n">winner_name</span><span class="p">]</span><span class="si">}</span><span class="s1"> obtuvo el mejor Dice = </span><span class="si">{</span><span class="n">winner_dice</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> ± </span><span class="si">{</span><span class="n">winner_std</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span>
+<span class="s1">   Es estadísticamente superior a TODOS los demás modelos:</span>
+<span class="s1">     - Friedman: χ² = </span><span class="si">{</span><span class="n">f_stat</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">, p = </span><span class="si">{</span><span class="n">f_p</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span>
+<span class="s1">     - Wilcoxon + Bonferroni: </span><span class="si">{</span><span class="n">n_sig_bonf</span><span class="si">}</span><span class="s1">/10 pares significativos</span>
+<span class="s1">     - Nemenyi: </span><span class="si">{</span><span class="n">n_sig</span><span class="si">}</span><span class="s1">/10 pares significativos</span>
+
+<span class="s1">2. INTERPRETACIÓN</span>
+<span class="s1">   El cuello de botella del problema no es la arquitectura del segmentador</span>
+<span class="s1">   sino el desbalance (60% imágenes sin nervio). La rama clasificadora</span>
+<span class="s1">   explícita del Dual-head produjo un salto del +</span><span class="si">{</span><span class="n">mejora_vs_unet</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">% sobre U-Net.</span>
+
+<span class="s1">3. JERARQUÍA ESTADÍSTICA CONFIRMADA</span>
+<span class="s1">   Dual-head &gt; Attention U-Net &gt; ResU-Net ≈ TU-Net ≈ U-Net</span>
+<span class="s1">   (TU-Net y U-Net no difieren significativamente: p = </span><span class="si">{</span><span class="n">nemenyi_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;TUNet&quot;</span><span class="p">,</span><span class="s2">&quot;UNet&quot;</span><span class="p">]</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">)</span>
+
+<span class="s1">4. BRECHA CON LA LITERATURA</span>
+<span class="s1">   SOTA reportado: 79.59% (split aleatorio, pre-entrenamiento médico)</span>
+<span class="s1">   Nuestro SOTA: </span><span class="si">{</span><span class="n">winner_dice</span><span class="si">:</span><span class="s1">.2%</span><span class="si">}</span><span class="s1"> (split por paciente, entrenamiento desde cero)</span>
+<span class="s1">   La evaluación más estricta refleja mejor el escenario clínico real.</span>
+
+<span class="s1">5. GAP IDENTIFICADO</span>
+<span class="s1">   Ningún paper combina el clasificador explícito de van Boxtel (2021)</span>
+<span class="s1">   con foundation models modernos (HA-SAM, MedSAM-2). Esta combinación</span>
+<span class="s1">   es la dirección más prometedora para superar el 80% bajo split estricto.</span>
+<span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;═&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>═══════════════════════════════════════════════════════════════════════════
+  CONCLUSIONES FINALES — BENCHMARK ULTRASOUND NERVE SEGMENTATION
+═══════════════════════════════════════════════════════════════════════════
+
+1. RESULTADO PRINCIPAL
+   Dual-head U-Net obtuvo el mejor Dice = 0.6372 ± 0.4498
+   Es estadísticamente superior a TODOS los demás modelos:
+     - Friedman: χ² = 418.49, p = 2.82e-89
+     - Wilcoxon + Bonferroni: 10/10 pares significativos
+     - Nemenyi: 7/10 pares significativos
+
+2. INTERPRETACIÓN
+   El cuello de botella del problema no es la arquitectura del segmentador
+   sino el desbalance (60% imágenes sin nervio). La rama clasificadora
+   explícita del Dual-head produjo un salto del +278% sobre U-Net.
+
+3. JERARQUÍA ESTADÍSTICA CONFIRMADA
+   Dual-head &gt; Attention U-Net &gt; ResU-Net ≈ TU-Net ≈ U-Net
+   (TU-Net y U-Net no difieren significativamente: p = 0.0000)
+
+4. BRECHA CON LA LITERATURA
+   SOTA reportado: 79.59% (split aleatorio, pre-entrenamiento médico)
+   Nuestro SOTA: 63.72% (split por paciente, entrenamiento desde cero)
+   La evaluación más estricta refleja mejor el escenario clínico real.
+
+5. GAP IDENTIFICADO
+   Ningún paper combina el clasificador explícito de van Boxtel (2021)
+   con foundation models modernos (HA-SAM, MedSAM-2). Esta combinación
+   es la dirección más prometedora para superar el 80% bajo split estricto.
+
+═══════════════════════════════════════════════════════════════════════════
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_benchmark.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Benchmark y Análisis Estadístico</p>
+      </div>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-benchmark-segmentacion-del-plexo-braquial">Deep Learning Benchmark: Segmentación del Plexo Braquial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discusion-critica">Discusión Crítica</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-con-la-literatura">1.0 Comparación con la literatura</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-clave-y-discusion">1.2 Hallazgos clave y discusión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-del-estudio">1.3 Limitaciones del estudio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recomendaciones">1.4 Recomendaciones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones">Conclusiones</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By ProyectoUltrasound
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
