@@ -160,7 +160,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="Notebooks/02_literatura.html">2. Estado del Arte</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Notebooks/02_models.html">3. Implementación de Modelos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Notebooks/03_benchmark.html">4. Benchmark y Análisis Estadístico</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Notebooks/04_informe_final.html">5. Informe Final</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/04_informe_final_of.html">5. Informe Final</a></li>
 </ul>
 
     </div>
@@ -311,9 +311,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-hace-este-proyecto">¿Qué hace este proyecto?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-libro">Estructura del libro</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado-principal">Resultado principal</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-metodologicos">Hallazgos metodológicos</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gap-identificado-para-trabajo-futuro">Gap identificado para trabajo futuro</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autores-y-reproducibilidad">Autores y reproducibilidad</a></li>
 </ul>
             </nav>
@@ -426,66 +423,6 @@ Capítulo 4 — Benchmark</div>
 </div>
 </section>
 <hr class="docutils" />
-<section id="resultado-principal">
-<h2>Resultado principal<a class="headerlink" href="#resultado-principal" title="Permalink to this heading">#</a></h2>
-<div class="important admonition">
-<p class="admonition-title">Hallazgo central</p>
-<p>El <strong>Dual-head U-Net</strong> obtuvo <strong>Dice = 0.6032 ± 0.17</strong>, siendo estadísticamente superior a los otros 4 modelos en todas las comparaciones pareadas (Friedman χ² = 469.63, p ≈ 10⁻¹⁰⁰).</p>
-<p>El cuello de botella del problema <strong>no es la arquitectura del segmentador</strong> sino el desbalance entre imágenes con y sin nervio. La rama clasificadora explícita (que predice presencia/ausencia del nervio antes de segmentar) produjo un salto del +235% en Dice respecto al U-Net baseline.</p>
-</div>
-<table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-center"><p>Ranking</p></th>
-<th class="head"><p>Modelo</p></th>
-<th class="head"><p>Dice (media ± std)</p></th>
-<th class="head"><p>Mejora vs baseline</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-center"><p>🥇 1</p></td>
-<td><p>Dual-head U-Net</p></td>
-<td><p>0.6032 ± 0.17</p></td>
-<td><p>+235%</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p>🥈 2</p></td>
-<td><p>Attention U-Net</p></td>
-<td><p>0.2567 ± 0.29</p></td>
-<td><p>+43%</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p>🥉 3</p></td>
-<td><p>ResU-Net</p></td>
-<td><p>0.2345 ± 0.26</p></td>
-<td><p>+30%</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p>4</p></td>
-<td><p>TU-Net</p></td>
-<td><p>0.1971 ± 0.29</p></td>
-<td><p>+10%</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p>5</p></td>
-<td><p>U-Net (baseline)</p></td>
-<td><p>0.1798 ± 0.29</p></td>
-<td><p>—</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<hr class="docutils" />
-<section id="hallazgos-metodologicos">
-<h2>Hallazgos metodológicos<a class="headerlink" href="#hallazgos-metodologicos" title="Permalink to this heading">#</a></h2>
-<p><strong>1. La estrategia dual supera a la innovación arquitectónica pura.</strong>
-Cuatro modelos con arquitecturas radicalmente distintas (U-Net, Attention, Residual, Transformer) quedaron en el rango 0.18–0.26, mientras que el modelo que ataca directamente el desbalance del dataset llegó a 0.60. Esto cuantifica empíricamente que el problema dominante es el desbalance, no la capacidad del segmentador.</p>
-<p><strong>2. Atención &gt; Profundidad &gt; Transformers (para datasets pequeños).</strong>
-Para este problema con target pequeño (~2,000 px²) en imágenes ruidosas, los attention gates son más efectivos que los bloques residuales o los mecanismos de self-attention global. Los Transformers requieren datos masivos que este dataset (3,836 imágenes de train) no puede proveer.</p>
-<p><strong>3. Split por paciente ≠ split aleatorio.</strong>
-Los scores de la literatura (65–79% Dice) usan splits aleatorios donde frames del mismo paciente caen en train y test, generando data leakage. Nuestro split por paciente completo es metodológicamente más estricto y refleja el escenario clínico real.</p>
-</section>
-<hr class="docutils" />
-<section id="gap-identificado-para-trabajo-futuro">
-<h2>Gap identificado para trabajo futuro<a class="headerlink" href="#gap-identificado-para-trabajo-futuro" title="Permalink to this heading">#</a></h2>
-<p>Ningún paper publicado ha combinado el principio del clasificador explícito (Van Boxtel et al., 2021) con arquitecturas modernas como HA-SAM (MICCAI 2025) o MedSAM-2. Esta combinación — dual-head + foundation model preentrenado en imágenes médicas — representa la dirección más prometedora para superar el 79.59% reportado como SOTA.</p>
-</section>
-<hr class="docutils" />
 <section id="autores-y-reproducibilidad">
 <h2>Autores y reproducibilidad<a class="headerlink" href="#autores-y-reproducibilidad" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -503,7 +440,7 @@ Los scores de la literatura (65–79% Dice) usan splits aleatorios donde frames 
 <li class="toctree-l1"><a class="reference internal" href="Notebooks/02_literatura.html">2. Estado del Arte</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Notebooks/02_models.html">3. Implementación de Modelos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Notebooks/03_benchmark.html">4. Benchmark y Análisis Estadístico</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Notebooks/04_informe_final.html">5. Informe Final</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Notebooks/04_informe_final_of.html">5. Informe Final</a></li>
 </ul>
 </div>
 </section>
@@ -571,9 +508,6 @@ Los scores de la literatura (65–79% Dice) usan splits aleatorios donde frames 
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-hace-este-proyecto">¿Qué hace este proyecto?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-libro">Estructura del libro</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado-principal">Resultado principal</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-metodologicos">Hallazgos metodológicos</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gap-identificado-para-trabajo-futuro">Gap identificado para trabajo futuro</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autores-y-reproducibilidad">Autores y reproducibilidad</a></li>
 </ul>
   </nav></div>

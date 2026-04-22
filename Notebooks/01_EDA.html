@@ -64,8 +64,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Notebooks/01_EDA';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="02_models.html" />
-    <link rel="prev" title="Deep Learning Project — Brachial Plexus Segmentation" href="../intro.html" />
+    <link rel="next" title="Estado del Arte — Segmentación del Plexo Braquial con Deep Learning" href="02_literatura.html" />
+    <link rel="prev" title="Ultrasound Nerve Segmentation" href="../intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -152,12 +152,16 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../intro.html">
-                    Deep Learning Project — Brachial Plexus Segmentation
+                    Ultrasound Nerve Segmentation
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_literatura.html">2. Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_models.html">3. Implementación de Modelos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_benchmark.html">4. Benchmark y Análisis Estadístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_informe_final_of.html">5. Informe Final</a></li>
 </ul>
 
     </div>
@@ -2392,13 +2396,8 @@ TABLA 3 — DECISIONES DE PREPROCESAMIENTO DERIVADAS DEL EDA
 </tr>
 </tbody>
 </table>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>No recalcular el split ni los parámetros de normalización en notebooks posteriores. Cualquier recálculo sobre el dataset completo introduce data leakage.</p>
-</div>
-<div class="important admonition">
-<p class="admonition-title">Decisión arquitectónica central</p>
-<p>El análisis de desbalance (60% sin nervio) motiva directamente el diseño del <strong>Dual-head U-Net</strong>: una rama que predice la presencia del nervio (clasificación binaria) y otra que genera la máscara de segmentación. En inferencia, si P(nervio) &lt; 0.5, la máscara se zerea. Esta decisión produce el mayor salto de rendimiento del benchmark (+235% sobre el baseline).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
 </div>
 </section>
 </section>
@@ -2440,15 +2439,15 @@ TABLA 3 — DECISIONES DE PREPROCESAMIENTO DERIVADAS DEL EDA
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Deep Learning Project — Brachial Plexus Segmentation</p>
+        <p class="prev-next-title">Ultrasound Nerve Segmentation</p>
       </div>
     </a>
     <a class="right-next"
-       href="02_models.html"
+       href="02_literatura.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">&lt;no title&gt;</p>
+        <p class="prev-next-title">Estado del Arte — Segmentación del Plexo Braquial con Deep Learning</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

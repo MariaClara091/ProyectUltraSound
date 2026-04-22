@@ -64,7 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Notebooks/02_literatura';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="02_models.html" />
+    <link rel="next" title="Implementación de Modelos" href="02_models.html" />
     <link rel="prev" title="Análisis Exploratorio de Datos (EDA)" href="01_EDA.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -159,6 +159,9 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01_EDA.html">1. Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_models.html">3. Implementación de Modelos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_benchmark.html">4. Benchmark y Análisis Estadístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_informe_final_of.html">5. Informe Final</a></li>
 </ul>
 
     </div>
@@ -322,7 +325,6 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-critica-estructurada">3.3 Comparación Crítica Estructurada</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tendencias-identificadas">Tendencias identificadas</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gap-identificado-en-la-literatura">Gap identificado en la literatura</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seccion-5-paper-guia">3.4 Sección 5 — Paper Guía</a></li>
@@ -339,10 +341,6 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="estado-del-arte-segmentacion-del-plexo-braquial-con-deep-learning">
 <h1>Estado del Arte — Segmentación del Plexo Braquial con Deep Learning<a class="headerlink" href="#estado-del-arte-segmentacion-del-plexo-braquial-con-deep-learning" title="Permalink to this heading">#</a></h1>
-<div class="note admonition">
-<p class="admonition-title">Sección 3 del Entregable</p>
-<p>Esta sección identifica el Top 5 de modelos de Deep Learning relevantes para el problema, basada en literatura científica reciente (Q1/Q2 en WoS/Scopus o conferencias top: AAAI, MICCAI, IEEE). Incluye estrategia de búsqueda, análisis detallado por modelo y comparación crítica.</p>
-</div>
 <hr class="docutils" />
 <section id="estrategia-de-busqueda">
 <h2>3.1 Estrategia de Búsqueda<a class="headerlink" href="#estrategia-de-busqueda" title="Permalink to this heading">#</a></h2>
@@ -774,14 +772,6 @@ Cuatro de los cinco modelos ignoran estructuralmente que el 60% de las imágenes
 <p><strong>3. Discrepancia metodológica generalizada</strong>
 Todos los papers del Top 5 usan splits aleatorios (frame-level), lo que permite data leakage entre pacientes. Solo nuestro benchmark usa split por paciente completo, lo que explica gran parte de la brecha observada.</p>
 </section>
-<section id="gap-identificado-en-la-literatura">
-<h3>Gap identificado en la literatura<a class="headerlink" href="#gap-identificado-en-la-literatura" title="Permalink to this heading">#</a></h3>
-<div class="important admonition">
-<p class="admonition-title">Gap principal</p>
-<p><strong>Ningún paper publicado ha combinado el principio del clasificador explícito de presencia</strong> (van Boxtel et al., 2021) <strong>con arquitecturas modernas de foundation models</strong> (HA-SAM MICCAI 2025, MedSAM-2, SAMUS). Esta combinación — dual-head + encoder preentrenado en imágenes médicas — representa la dirección más prometedora y no explorada en la literatura.</p>
-<p>Los modelos SOTA como TU-Net alcanzan 79.59% sin abordar el desbalance. Si se añade la estrategia dual-head a TU-Net o HA-SAM, se esperaría superar el 80% bajo split estricto por paciente.</p>
-</div>
-</section>
 </section>
 <hr class="docutils" />
 <section id="seccion-5-paper-guia">
@@ -873,7 +863,7 @@ Todos los papers del Top 5 usan splits aleatorios (frame-level), lo que permite 
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">&lt;no title&gt;</p>
+        <p class="prev-next-title">Implementación de Modelos</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -912,7 +902,6 @@ Todos los papers del Top 5 usan splits aleatorios (frame-level), lo que permite 
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-critica-estructurada">3.3 Comparación Crítica Estructurada</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tendencias-identificadas">Tendencias identificadas</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gap-identificado-en-la-literatura">Gap identificado en la literatura</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seccion-5-paper-guia">3.4 Sección 5 — Paper Guía</a></li>

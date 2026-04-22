@@ -63,44 +63,6 @@ Análisis estadístico riguroso: Friedman test, Nemenyi post-hoc, Wilcoxon con c
 
 ---
 
-## Resultado principal
-
-```{admonition} Hallazgo central
-:class: important
-El **Dual-head U-Net** obtuvo **Dice = 0.6032 ± 0.17**, siendo estadísticamente superior a los otros 4 modelos en todas las comparaciones pareadas (Friedman χ² = 469.63, p ≈ 10⁻¹⁰⁰). 
-
-El cuello de botella del problema **no es la arquitectura del segmentador** sino el desbalance entre imágenes con y sin nervio. La rama clasificadora explícita (que predice presencia/ausencia del nervio antes de segmentar) produjo un salto del +235% en Dice respecto al U-Net baseline.
-```
-
-| Ranking | Modelo | Dice (media ± std) | Mejora vs baseline |
-|:---:|---|---|---|
-| 🥇 1 | Dual-head U-Net | 0.6032 ± 0.17 | +235% |
-| 🥈 2 | Attention U-Net | 0.2567 ± 0.29 | +43% |
-| 🥉 3 | ResU-Net | 0.2345 ± 0.26 | +30% |
-| 4 | TU-Net | 0.1971 ± 0.29 | +10% |
-| 5 | U-Net (baseline) | 0.1798 ± 0.29 | — |
-
----
-
-## Hallazgos metodológicos
-
-**1. La estrategia dual supera a la innovación arquitectónica pura.**
-Cuatro modelos con arquitecturas radicalmente distintas (U-Net, Attention, Residual, Transformer) quedaron en el rango 0.18–0.26, mientras que el modelo que ataca directamente el desbalance del dataset llegó a 0.60. Esto cuantifica empíricamente que el problema dominante es el desbalance, no la capacidad del segmentador.
-
-**2. Atención > Profundidad > Transformers (para datasets pequeños).**
-Para este problema con target pequeño (~2,000 px²) en imágenes ruidosas, los attention gates son más efectivos que los bloques residuales o los mecanismos de self-attention global. Los Transformers requieren datos masivos que este dataset (3,836 imágenes de train) no puede proveer.
-
-**3. Split por paciente ≠ split aleatorio.**
-Los scores de la literatura (65–79% Dice) usan splits aleatorios donde frames del mismo paciente caen en train y test, generando data leakage. Nuestro split por paciente completo es metodológicamente más estricto y refleja el escenario clínico real.
-
----
-
-## Gap identificado para trabajo futuro
-
-Ningún paper publicado ha combinado el principio del clasificador explícito (Van Boxtel et al., 2021) con arquitecturas modernas como HA-SAM (MICCAI 2025) o MedSAM-2. Esta combinación — dual-head + foundation model preentrenado en imágenes médicas — representa la dirección más prometedora para superar el 79.59% reportado como SOTA.
-
----
-
 ## Autores y reproducibilidad
 
 - **Dataset:** [Kaggle Ultrasound Nerve Segmentation](https://www.kaggle.com/c/ultrasound-nerve-segmentation)
