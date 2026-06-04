@@ -64,6 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Notebooks/03_benchmark';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modelo Original: DHASG v2" href="04_Modelo_Original.html" />
     <link rel="prev" title="Implementación de Modelos" href="02_models.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -160,6 +161,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="02_literatura.html">2. Estado del Arte</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_models.html">3. Implementación de Modelos</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">4. Benchmark y Análisis Estadístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Modelo_Original.html">5. Modelo Original</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Informe_final.html">6. Informe Final</a></li>
 </ul>
 
     </div>
@@ -312,18 +315,7 @@ document.write(`
 <h1>Benchmark y Análisis Estadístico<a class="headerlink" href="#benchmark-y-analisis-estadistico" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ═════════════════════════════════════════════════════════════════════</span>
-<span class="c1"># BENCHMARK FINAL — ANÁLISIS ESTADÍSTICO RIGUROSO</span>
-<span class="c1"># Ultrasound Nerve Segmentation</span>
-<span class="c1"># ═════════════════════════════════════════════════════════════════════</span>
-<span class="c1"># Comparación formal de los 5 modelos benchmark mediante:</span>
-<span class="c1">#   - Tablas comparativas con intervalos de confianza</span>
-<span class="c1">#   - Ranking por desempeño y trade-off</span>
-<span class="c1">#   - Pruebas de hipótesis (Friedman, Wilcoxon, Nemenyi)</span>
-<span class="c1">#   - Análisis cualitativo de predicciones</span>
-<span class="c1"># ═════════════════════════════════════════════════════════════════════</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">gc</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -1443,7 +1435,6 @@ MATRIZ DE p-VALORES (corrección Bonferroni)
 <span class="c1"># 4. NEMENYI POST-HOC TEST</span>
 <span class="c1"># Más adecuado que Bonferroni para comparaciones múltiples post-Friedman</span>
 <span class="c1"># ═════════════════════════════════════════════════════════════════════</span>
-<span class="c1"># Si scikit-posthocs no está instalado: pip install scikit-posthocs</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">scikit_posthocs</span> <span class="k">as</span> <span class="nn">sp</span>
@@ -1662,7 +1653,6 @@ Predicciones generadas
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ═════════════════════════════════════════════════════════════════════</span>
 <span class="c1"># ANÁLISIS DE ERRORES SISTEMÁTICOS POR TIPO DE IMAGEN</span>
-<span class="c1"># ¿Cómo se comporta cada modelo en imágenes con vs sin nervio?</span>
 <span class="c1"># ═════════════════════════════════════════════════════════════════════</span>
 
 <span class="c1"># Construir DataFrame con scores por imagen + metadatos</span>
@@ -1785,8 +1775,7 @@ TUNet:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ═════════════════════════════════════════════════════════════════════</span>
-<span class="c1"># RESUMEN EJECUTIVO DEL BENCHMARK</span>
-<span class="c1"># Para incluir en el informe final del entregable</span>
+<span class="c1"># RESUMEN DEL BENCHMARK</span>
 <span class="c1"># ═════════════════════════════════════════════════════════════════════</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;═&#39;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
@@ -1934,6 +1923,15 @@ BENCHMARK COMPLETO — Listo para el informe del entregable
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">Implementación de Modelos</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="04_Modelo_Original.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Modelo Original: DHASG v2</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div></div>
   
