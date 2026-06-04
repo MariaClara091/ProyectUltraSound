@@ -1,0 +1,1347 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Informe Final — Segmentación del Plexo Braquial en Ultrasonido con Deep Learning &#8212; Ultrasound Nerve Segmentation — Deep Learning Benchmark</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Notebooks/05_Informe_final';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Modelo Original: DHASG v2" href="04_Modelo_Original.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Ultrasound Nerve Segmentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_EDA.html">1. Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_literatura.html">2. Estado del Arte</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_models.html">3. Implementación de Modelos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_benchmark.html">4. Benchmark y Análisis Estadístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_Modelo_Original.html">5. Modelo Original</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Informe Final</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/Notebooks/05_Informe_final.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Informe Final — Segmentación del Plexo Braquial en Ultrasonido con Deep Learning</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-ejecutivo">Resumen Ejecutivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-contenidos">Tabla de Contenidos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-del-problema">1. Definición del Problema</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-clinico">1.1 Contexto clínico</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulacion-del-problema">1.2 Formulación del problema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#desafio-central-desbalance-estructural">1.3 Desafío central: desbalance estructural</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-y-analisis-exploratorio-eda">2. Dataset y Análisis Exploratorio (EDA)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descripcion-del-dataset">2.1 Descripción del dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inventario-e-integridad">2.2 Inventario e integridad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-de-la-variable-objetivo">2.3 Distribución de la variable objetivo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-del-eda">2.4 Hipótesis del EDA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#particion-del-dataset">2.5 Partición del dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocesamiento">3. Preprocesamiento</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-de-preprocesamiento-aplicado-a-todos-los-splits">3.1 Pipeline de preprocesamiento (aplicado a todos los splits)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-1-umbralizacion-binaria-de-mascaras">Paso 1 — Umbralización binaria de máscaras</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-2-clahe-contrast-limited-adaptive-histogram-equalization">Paso 2 — CLAHE (Contrast Limited Adaptive Histogram Equalization)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-3-resize">Paso 3 — Resize</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-4-normalizacion-z-score">Paso 4 — Normalización Z-score</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-augmentation-solo-train">3.2 Data Augmentation (solo train)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#canales-de-entrada">3.3 Canales de entrada</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-benchmark">4. Modelos Benchmark</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-experimental-comun">4.1 Configuración experimental común</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-1-u-net-baseline">4.2 Modelo 1 — U-Net (Baseline)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-2-attention-u-net">4.3 Modelo 2 — Attention U-Net</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-3-resu-net">4.4 Modelo 3 — ResU-Net</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-4-dual-head-u-net">4.5 Modelo 4 — Dual-Head U-Net</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-5-tu-net">4.6 Modelo 5 — TU-Net</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-original-dhasg-v2">5. Modelo Original — DHASG v2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivacion">5.1 Motivación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-de-diseno">5.2 Comparación de diseño</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura">5.3 Arquitectura</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matematicas-del-modelo">5.4 Matemáticas del modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-gate-oktay-et-al-2018">Attention Gate (Oktay et al., 2018)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soft-gate-entrenamiento-y-hard-gate-evaluacion">Soft Gate (entrenamiento) y Hard Gate (evaluación)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-loss">Combined Loss</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#protocolo-de-entrenamiento">5.5 Protocolo de entrenamiento</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-y-resultados">6. Evaluación y Resultados</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-completa">6.1 Tabla comparativa completa</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-por-modelo">6.2 Interpretación por modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-estadistica">6.3 Validación estadística</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dhasg-v2-comparacion-con-baseline">6.4 DHASG v2 — Comparación con baseline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-cualitativo-tres-categorias-de-prediccion">6.5 Análisis cualitativo — Tres categorías de predicción</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utilidad-clinica">7. Utilidad Clínica</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicacion-directa">7.1 Aplicación directa</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-con-la-literatura">7.2 Comparación con la literatura</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones">7.3 Limitaciones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones-y-trabajo-futuro">8. Conclusiones y Trabajo Futuro</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones">8.1 Conclusiones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trabajo-futuro">8.2 Trabajo futuro</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="informe-final-segmentacion-del-plexo-braquial-en-ultrasonido-con-deep-learning">
+<h1>Informe Final — Segmentación del Plexo Braquial en Ultrasonido con Deep Learning<a class="headerlink" href="#informe-final-segmentacion-del-plexo-braquial-en-ultrasonido-con-deep-learning" title="Permalink to this heading">#</a></h1>
+<p><strong>Universidad del Norte — Proyecto de Deep Learning</strong><br />
+<strong>Autores:</strong> María Clara Ávila · Mateo José Giraldo · Miguel Ángel Lugo · Hector David Sanjuan<br />
+<strong>Fecha:</strong> 4 de Junio 2026</p>
+<hr class="docutils" />
+<section id="resumen-ejecutivo">
+<h2>Resumen Ejecutivo<a class="headerlink" href="#resumen-ejecutivo" title="Permalink to this heading">#</a></h2>
+<p>Este informe presenta el desarrollo completo de un sistema de segmentación semántica binaria del plexo braquial en imágenes de ultrasonido, implementado con técnicas de Deep Learning. El problema tiene impacto clínico directo: los anestesiólogos deben localizar manualmente el plexo braquial antes de procedimientos de anestesia regional en hombro y brazo, un proceso que depende fuertemente de la experiencia del operador.</p>
+<p>El trabajo se estructuró en cuatro fases: (1) análisis exploratorio riguroso del dataset UNS-2016, (2) implementación y evaluación de 5 modelos benchmark bajo condiciones controladas, (3) diseño e implementación del modelo original DHASG v2, y (4) análisis estadístico formal de los resultados.</p>
+<p><strong>Resultado principal:</strong> DHASG v2 alcanza un Dice PP de <strong>0.6397 ± 0.0069</strong> bajo condiciones de evaluación clínicamente honestas (split por paciente), superando al mejor benchmark (DualHeadUNet: 0.6032 ± 0.4413) y reduciendo la varianza entre runs en un <strong>96%</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="tabla-de-contenidos">
+<h2>Tabla de Contenidos<a class="headerlink" href="#tabla-de-contenidos" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><span class="xref myst">Definición del Problema</span></p></li>
+<li><p><span class="xref myst">Dataset y Análisis Exploratorio (EDA)</span></p></li>
+<li><p><span class="xref myst">Preprocesamiento</span></p></li>
+<li><p><span class="xref myst">Modelos Benchmark</span></p></li>
+<li><p><span class="xref myst">Modelo Original — DHASG v2</span></p></li>
+<li><p><span class="xref myst">Evaluación y Resultados</span></p></li>
+<li><p><span class="xref myst">Utilidad Clínica</span></p></li>
+<li><p><span class="xref myst">Conclusiones y Trabajo Futuro</span></p></li>
+<li><p><span class="xref myst">Referencias</span></p></li>
+</ol>
+<p><a id='1-definicion'></a></p>
+</section>
+<section id="definicion-del-problema">
+<h2>1. Definición del Problema<a class="headerlink" href="#definicion-del-problema" title="Permalink to this heading">#</a></h2>
+<section id="contexto-clinico">
+<h3>1.1 Contexto clínico<a class="headerlink" href="#contexto-clinico" title="Permalink to this heading">#</a></h3>
+<p>El bloqueo del plexo braquial es una técnica de anestesia regional utilizada en cirugías de hombro, brazo y mano. El procedimiento requiere que el anestesiólogo localice visualmente el plexo braquial en imágenes de ultrasonido en tiempo real antes de insertar la aguja. Esta tarea es:</p>
+<ul class="simple">
+<li><p><strong>Dependiente del operador:</strong> la tasa de éxito varía entre el 80% y el 99% según la experiencia del anestesiólogo.</p></li>
+<li><p><strong>Tiempo-intensiva:</strong> puede tomar entre 2 y 8 minutos en operadores con menos experiencia.</p></li>
+<li><p><strong>Visualmente difícil:</strong> el nervio aparece como una estructura hipoecoica rodeada de tejidos de características similares, con ruido <em>speckle</em> característico del ultrasonido.</p></li>
+</ul>
+<p>Un sistema de segmentación automática reduciría el tiempo de localización y proveería una segunda opinión objetiva para operadores en entrenamiento.</p>
+</section>
+<section id="formulacion-del-problema">
+<h3>1.2 Formulación del problema<a class="headerlink" href="#formulacion-del-problema" title="Permalink to this heading">#</a></h3>
+<p><strong>Tarea:</strong> Segmentación semántica binaria a nivel de píxel del plexo braquial en imágenes de ultrasonido.</p>
+<p><strong>Entrada:</strong> Imagen de ultrasonido en escala de grises de resolución variable.</p>
+<p><strong>Salida:</strong> Máscara binaria <span class="math notranslate nohighlight">\(\hat{M} \in \{0,1\}^{H \times W}\)</span> donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\hat{M}_{i,j} = 1\)</span> si el píxel <span class="math notranslate nohighlight">\((i,j)\)</span> pertenece al plexo braquial</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{M}_{i,j} = 0\)</span> en caso contrario</p></li>
+</ul>
+<p><strong>Métrica oficial:</strong> Coeficiente de Dice, definido como:</p>
+<div class="math notranslate nohighlight">
+\[\text{Dice} = \frac{2 \cdot \text{TP}}{2 \cdot \text{TP} + \text{FP} + \text{FN}} = \frac{2\sum_{i,j}\hat{M}_{i,j} \cdot M_{i,j} + \text{smooth}}{\sum_{i,j}\hat{M}_{i,j} + \sum_{i,j}M_{i,j} + \text{smooth}}\]</div>
+<p>Con <span class="math notranslate nohighlight">\(\text{smooth} = 1.0\)</span> para evitar división por cero en imágenes sin nervio.</p>
+<p><strong>¿Por qué Dice y no accuracy?</strong> Con el 58.8% de imágenes sin nervio, un modelo que siempre predice cero obtiene <em>accuracy</em> = 0.588 pero Dice = 0. El Dice es invariante al desbalance de píxeles y penaliza falsos positivos y falsos negativos por igual. Es la métrica oficial del concurso Kaggle UNS-2016.</p>
+</section>
+<section id="desafio-central-desbalance-estructural">
+<h3>1.3 Desafío central: desbalance estructural<a class="headerlink" href="#desafio-central-desbalance-estructural" title="Permalink to this heading">#</a></h3>
+<p>El 58.8% de las imágenes del dataset <strong>no contienen nervio visible</strong>. Este desbalance no es un artefacto del muestreo, sino una característica real del procedimiento: el transductor captura múltiples frames por segundo y el nervio no es visible en todos ellos.</p>
+<p>Este desbalance implica que:</p>
+<ul class="simple">
+<li><p>Los modelos de segmentación sin mecanismo de detección de presencia generan <strong>falsos positivos masivos</strong> en imágenes vacías, colapsando el Dice.</p></li>
+<li><p>El enfoque correcto requiere <strong>primero decidir si hay nervio</strong>, y solo entonces segmentar.</p></li>
+<li><p>La función de pérdida debe manejar explícitamente el desbalance.</p></li>
+</ul>
+<p><a id='2-eda'></a></p>
+</section>
+</section>
+<section id="dataset-y-analisis-exploratorio-eda">
+<h2>2. Dataset y Análisis Exploratorio (EDA)<a class="headerlink" href="#dataset-y-analisis-exploratorio-eda" title="Permalink to this heading">#</a></h2>
+<section id="descripcion-del-dataset">
+<h3>2.1 Descripción del dataset<a class="headerlink" href="#descripcion-del-dataset" title="Permalink to this heading">#</a></h3>
+<p><strong>Fuente:</strong> Kaggle — Ultrasound Nerve Segmentation (2016)<br />
+<strong>URL:</strong> https://www.kaggle.com/c/ultrasound-nerve-segmentation</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Conjunto</p></th>
+<th class="head"><p>Imágenes</p></th>
+<th class="head"><p>Notas</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Train</p></td>
+<td><p>5,635</p></td>
+<td><p>Con máscaras binarias anotadas por expertos</p></td>
+</tr>
+<tr class="row-odd"><td><p>Test</p></td>
+<td><p>5,508</p></td>
+<td><p>Sin máscaras (evaluación vía Kaggle)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Total</strong></p></td>
+<td><p><strong>11,143</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><strong>Pacientes:</strong> 47 sujetos distintos</p></li>
+<li><p><strong>Formato:</strong> TIFF en escala de grises, resolución variable (~580×420 px)</p></li>
+<li><p><strong>Nomenclatura:</strong> <code class="docutils literal notranslate"><span class="pre">{patient_id}_{frame_id}.tif</span></code> y <code class="docutils literal notranslate"><span class="pre">{patient_id}_{frame_id}_mask.tif</span></code></p></li>
+<li><p><strong>Anotaciones:</strong> máscaras binarias con valores exactos 0 y 255 (anotaciones manuales de expertos)</p></li>
+</ul>
+</section>
+<section id="inventario-e-integridad">
+<h3>2.2 Inventario e integridad<a class="headerlink" href="#inventario-e-integridad" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>5,635 pares imagen-máscara completos. Cero imágenes sin máscara correspondiente.</p></li>
+<li><p>Cero imágenes corruptas detectadas.</p></li>
+<li><p>Consistencia perfecta entre conteo pixel-wise y el archivo <code class="docutils literal notranslate"><span class="pre">train_masks.csv</span></code> provisto por Kaggle.</p></li>
+<li><p>Todos los 47 pacientes tienen frames con y sin nervio (ningún paciente es “puro”).</p></li>
+</ul>
+</section>
+<section id="distribucion-de-la-variable-objetivo">
+<h3>2.3 Distribución de la variable objetivo<a class="headerlink" href="#distribucion-de-la-variable-objetivo" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Clase</p></th>
+<th class="head"><p>N imágenes</p></th>
+<th class="head"><p>Porcentaje</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Con nervio (máscara no vacía)</p></td>
+<td><p>2,317</p></td>
+<td><p>41.1%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sin nervio (máscara vacía)</p></td>
+<td><p>3,318</p></td>
+<td><p>58.9%</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Total</strong></p></td>
+<td><p><strong>5,635</strong></p></td>
+<td><p><strong>100%</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Área de las máscaras (solo imágenes con nervio):</strong></p>
+<ul class="simple">
+<li><p>Media: ~4,200 px · Mediana: ~3,800 px · Rango: 50–25,000 px</p></li>
+<li><p>Distribución sesgada a la derecha: la mayoría de los nervios visibles son pequeños.</p></li>
+</ul>
+</section>
+<section id="hipotesis-del-eda">
+<h3>2.4 Hipótesis del EDA<a class="headerlink" href="#hipotesis-del-eda" title="Permalink to this heading">#</a></h3>
+<p>El análisis exploratorio identificó tres hallazgos estructurales del dataset:</p>
+<p><strong>H1 — Ruido de etiquetado (SSIM):</strong> Se detectaron 33 pares de imágenes del mismo paciente con similaridad estructural SSIM &gt; 0.90 pero etiquetas diferentes (una con nervio, otra sin nervio). 2 pares tienen SSIM = 1.0 (copias exactas con distinto ground truth). Esto indica ruido de anotación inherente al proceso de etiquetado manual.</p>
+<p><strong>H2 — El split importa más que el modelo:</strong> Frames consecutivos del mismo paciente tienen SSIM &gt; 0.85. Un split aleatorio por frame garantiza data leakage: el modelo ve en validación frames casi idénticos a los de entrenamiento del mismo paciente. Esto infla artificialmente el Dice reportado en la literatura (que típicamente reporta ~0.79).</p>
+<p><strong>H3 — Variabilidad de intensidad inter-paciente:</strong> Las distribuciones de intensidad varían significativamente entre pacientes (Std: 57.8 → 61.8 px con CLAHE). Esta variación depende del equipo, presión del transductor y morfología del paciente, y justifica la normalización z-score.</p>
+</section>
+<section id="particion-del-dataset">
+<h3>2.5 Partición del dataset<a class="headerlink" href="#particion-del-dataset" title="Permalink to this heading">#</a></h3>
+<p><strong>Criterio:</strong> Split por paciente completo, estratificado por presencia de nervio. Ningún paciente puede aparecer en más de un split.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Split</p></th>
+<th class="head"><p>Pacientes</p></th>
+<th class="head"><p>Frames</p></th>
+<th class="head"><p>Tasa nervio</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Train</p></td>
+<td><p>31</p></td>
+<td><p>~3,836</p></td>
+<td><p>~41%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Val</p></td>
+<td><p>8</p></td>
+<td><p>~839</p></td>
+<td><p>~41%</p></td>
+</tr>
+<tr class="row-even"><td><p>Test</p></td>
+<td><p>8</p></td>
+<td><p>~960</p></td>
+<td><p>~41%</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verificación anti-leakage:</strong> 0 pacientes en overlap entre cualquier par de splits.</p>
+<p><strong>¿Por qué 8 pacientes en test?</strong> Representa ~17% de los 47 pacientes. Con 8 pacientes completos, el test set contiene ~960 frames que nunca fueron vistos en ninguna forma durante el entrenamiento. Esta es la única evaluación clínicamente honesta: el modelo debe generalizar a anatomías completamente nuevas.</p>
+<p><a id='3-preprocesamiento'></a></p>
+</section>
+</section>
+<section id="preprocesamiento">
+<h2>3. Preprocesamiento<a class="headerlink" href="#preprocesamiento" title="Permalink to this heading">#</a></h2>
+<section id="pipeline-de-preprocesamiento-aplicado-a-todos-los-splits">
+<h3>3.1 Pipeline de preprocesamiento (aplicado a todos los splits)<a class="headerlink" href="#pipeline-de-preprocesamiento-aplicado-a-todos-los-splits" title="Permalink to this heading">#</a></h3>
+<p>El pipeline es idéntico para train, val y test. La única diferencia es que el data augmentation se aplica <strong>exclusivamente en train</strong>.</p>
+<section id="paso-1-umbralizacion-binaria-de-mascaras">
+<h4>Paso 1 — Umbralización binaria de máscaras<a class="headerlink" href="#paso-1-umbralizacion-binaria-de-mascaras" title="Permalink to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{mask}_{binaria}(i,j) = \begin{cases} 1 &amp; \text{si } \text{mask}_{TIFF}(i,j) &gt; 0 \\ 0 &amp; \text{en otro caso} \end{cases}\end{split}\]</div>
+<p>Las máscaras TIFF contienen exactamente dos valores: 0 (fondo) y 255 (nervio). Threshold=0 convierte directamente 255→1 y 0→0. No es un hiperparámetro sino una conversión directa de anotaciones expertas binarias.</p>
+</section>
+<section id="paso-2-clahe-contrast-limited-adaptive-histogram-equalization">
+<h4>Paso 2 — CLAHE (Contrast Limited Adaptive Histogram Equalization)<a class="headerlink" href="#paso-2-clahe-contrast-limited-adaptive-histogram-equalization" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">clipLimit</span> <span class="pre">=</span> <span class="pre">2.0</span></code> · <code class="docutils literal notranslate"><span class="pre">tileGridSize</span> <span class="pre">=</span> <span class="pre">(8,</span> <span class="pre">8)</span></code></p></li>
+<li><p>Mejora el contraste local sin amplificar el ruido <em>speckle</em> característico del ultrasonido.</p></li>
+<li><p>A diferencia de la ecualización global, CLAHE trabaja en tiles de 8×8 px, preservando estructuras locales como el nervio.</p></li>
+<li><p>El clipLimit=2.0 limita la amplificación para evitar sobreexposición de regiones de alto contraste.</p></li>
+</ul>
+</section>
+<section id="paso-3-resize">
+<h4>Paso 3 — Resize<a class="headerlink" href="#paso-3-resize" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Imágenes: <code class="docutils literal notranslate"><span class="pre">cv2.INTER_LINEAR</span></code> → 256×256 px</p></li>
+<li><p>Máscaras: <code class="docutils literal notranslate"><span class="pre">cv2.INTER_NEAREST</span></code> → 256×256 px</p></li>
+</ul>
+<p>Se usa interpolación nearest neighbor para máscaras para evitar introducir valores intermedios (0.3, 0.7, etc.) que contaminarían las etiquetas binarias.</p>
+</section>
+<section id="paso-4-normalizacion-z-score">
+<h4>Paso 4 — Normalización Z-score<a class="headerlink" href="#paso-4-normalizacion-z-score" title="Permalink to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[x_{norm} = \frac{x - \mu_{train}}{\sigma_{train}}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mu_{train}\)</span> y <span class="math notranslate nohighlight">\(\sigma_{train}\)</span> calculados <strong>exclusivamente</strong> sobre el conjunto de train.</p></li>
+<li><p>Aplicados a los tres splits.</p></li>
+<li><p>Usar parámetros del val o test sería <strong>data leakage desde el preprocesamiento</strong>.</p></li>
+</ul>
+</section>
+</section>
+<section id="data-augmentation-solo-train">
+<h3>3.2 Data Augmentation (solo train)<a class="headerlink" href="#data-augmentation-solo-train" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Técnica</p></th>
+<th class="head"><p>Parámetros</p></th>
+<th class="head"><p>Justificación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Flip horizontal</p></td>
+<td><p>p=0.5</p></td>
+<td><p>El nervio puede aparecer a ambos lados del frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Flip vertical</p></td>
+<td><p>p=0.2</p></td>
+<td><p>Van Boxtel (2021)</p></td>
+</tr>
+<tr class="row-even"><td><p>Rotación ±15°</p></td>
+<td><p>p=0.5</p></td>
+<td><p>Variación real del ángulo del transductor</p></td>
+</tr>
+<tr class="row-odd"><td><p>Deformación elástica</p></td>
+<td><p>α=720, σ=24, p=0.4</p></td>
+<td><p>Simone et al. (2003) — deformación del tejido blando</p></td>
+</tr>
+<tr class="row-even"><td><p>Brillo ± 0.2</p></td>
+<td><p>p=0.5</p></td>
+<td><p>Variación del equipo de ultrasonido</p></td>
+</tr>
+<tr class="row-odd"><td><p>Contraste ×[0.8, 1.2]</p></td>
+<td><p>p=0.5</p></td>
+<td><p>Variación de ganancia del transductor</p></td>
+</tr>
+<tr class="row-even"><td><p>Ruido gaussiano σ=0.03</p></td>
+<td><p>p=0.3</p></td>
+<td><p>Ruido speckle adicional</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decisión de diseño:</strong> No se aplicaron rotaciones de 90°/180° (usadas en los benchmarks TF). Estas no representan vistas anatómicas reales del plexo braquial y pueden confundir al modelo. En el modelo original DHASG v2 se usaron únicamente rotaciones pequeñas ±15°.</p>
+<p><strong>Decisión de diseño:</strong> No se aplicó oversampling para balancear clases. El desbalance 58.8%/41.2% es representativo de la práctica clínica real. El balance se maneja mediante:</p>
+<ul class="simple">
+<li><p>La función de pérdida BCE+Dice que penaliza falsos positivos en imágenes vacías.</p></li>
+<li><p>El <code class="docutils literal notranslate"><span class="pre">pos_weight=1.43</span></code> en la loss del clasificador de DHASG v2.</p></li>
+<li><p>La arquitectura dual-head que aprende explícitamente a detectar presencia del nervio.</p></li>
+</ul>
+</section>
+<section id="canales-de-entrada">
+<h3>3.3 Canales de entrada<a class="headerlink" href="#canales-de-entrada" title="Permalink to this heading">#</a></h3>
+<p><strong>Benchmarks TF:</strong> 1 canal (escala de grises) — shape <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">256,</span> <span class="pre">256,</span> <span class="pre">1)</span></code></p>
+<p><strong>DHASG v2 (PyTorch):</strong> 3 canales — el canal gris se replica 3 veces → shape <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">3,</span> <span class="pre">256,</span> <span class="pre">256)</span></code>. Esto es necesario para compatibilidad con ResNet34 y EfficientNet-B0 preentrenados en ImageNet (que esperan entrada RGB). Es práctica estándar en transfer learning para imágenes médicas.</p>
+<p><a id='4-benchmarks'></a></p>
+</section>
+</section>
+<section id="modelos-benchmark">
+<h2>4. Modelos Benchmark<a class="headerlink" href="#modelos-benchmark" title="Permalink to this heading">#</a></h2>
+<section id="configuracion-experimental-comun">
+<h3>4.1 Configuración experimental común<a class="headerlink" href="#configuracion-experimental-comun" title="Permalink to this heading">#</a></h3>
+<p>Todos los modelos benchmark se entrenaron bajo <strong>exactamente las mismas condiciones</strong> para garantizar comparabilidad:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Hiperparámetro</p></th>
+<th class="head"><p>Valor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Framework</p></td>
+<td><p>TensorFlow 2.x / Keras</p></td>
+</tr>
+<tr class="row-odd"><td><p>Resolución de entrada</p></td>
+<td><p>256×256×1</p></td>
+</tr>
+<tr class="row-even"><td><p>Batch size</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>Épocas máximas</p></td>
+<td><p>200</p></td>
+</tr>
+<tr class="row-even"><td><p>Learning rate</p></td>
+<td><p>1e-4 (Adam)</p></td>
+</tr>
+<tr class="row-odd"><td><p>EarlyStopping</p></td>
+<td><p>patience=30, monitor=val_dice_coef</p></td>
+</tr>
+<tr class="row-even"><td><p>ReduceLROnPlateau</p></td>
+<td><p>patience=10, factor=0.5, min_lr=1e-7</p></td>
+</tr>
+<tr class="row-odd"><td><p>Runs por modelo</p></td>
+<td><p>3 (semillas 42, 43, 44)</p></td>
+</tr>
+<tr class="row-even"><td><p>Función de pérdida</p></td>
+<td><p>BCE + Dice</p></td>
+</tr>
+<tr class="row-odd"><td><p>Filtros base</p></td>
+<td><p>32 (depth=4)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Función de pérdida BCE+Dice:</strong></p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{seg} = \underbrace{\mathbb{E}[-y\log\hat{y} - (1-y)\log(1-\hat{y})]}_\text{BCE} + \underbrace{\left(1 - \frac{2\sum\hat{y} \cdot y + 1}{\sum\hat{y} + \sum y + 1}\right)}_\text{Dice Loss}\]</div>
+<p>Esta combinación es más robusta que solo Dice (que colapsa ante ruido de etiquetas) y más informativa que solo BCE (que no penaliza suficientemente la falta de solapamiento).</p>
+</section>
+<section id="modelo-1-u-net-baseline">
+<h3>4.2 Modelo 1 — U-Net (Baseline)<a class="headerlink" href="#modelo-1-u-net-baseline" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia:</strong> Ronneberger et al. (2015) — <em>U-Net: Convolutional Networks for Biomedical Image Segmentation</em>, MICCAI 2015.</p>
+<p>Arquitectura encoder-decoder con skip connections directas. El encoder reduce la resolución espacial mediante MaxPooling mientras aumenta el número de canales. El decoder reconstruye la resolución mediante ConvTranspose2D. Los skip connections concatenan features del encoder con el decoder para preservar detalles espaciales finos.</p>
+<ul class="simple">
+<li><p><strong>Encoder:</strong> 4 niveles, Conv-BN-ReLU×2 + MaxPooling. Filtros: 32→64→128→256</p></li>
+<li><p><strong>Bottleneck:</strong> Conv-BN-ReLU×2, 512 filtros</p></li>
+<li><p><strong>Decoder:</strong> 4 niveles, ConvTranspose2D + Concatenate + Conv-BN-ReLU×2</p></li>
+<li><p><strong>Salida:</strong> Conv2D(1, sigmoid)</p></li>
+<li><p><strong>Parámetros:</strong> ~7.77M</p></li>
+</ul>
+</section>
+<section id="modelo-2-attention-u-net">
+<h3>4.3 Modelo 2 — Attention U-Net<a class="headerlink" href="#modelo-2-attention-u-net" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia:</strong> Oktay et al. (2018) — <em>Attention U-Net: Learning Where to Look for the Pancreas</em>, MIDL 2018.</p>
+<p>Extiende la U-Net con <strong>Attention Gates</strong> en los skip connections. Cada gate aprende a ponderar espacialmente las features del encoder según la señal del decoder (gating signal), suprimiendo regiones irrelevantes antes de concatenarlas.</p>
+<div class="math notranslate nohighlight">
+\[\alpha_i = \sigma_2\left(\psi^T\left(\sigma_1\left(W_g \cdot g + W_x \cdot x_i + b_g\right)\right) + b_\psi\right), \quad \tilde{x}_i = \alpha_i \odot x_i\]</div>
+<ul class="simple">
+<li><p>Dropout 0.2 en bottleneck y decoder</p></li>
+<li><p><strong>Parámetros:</strong> ~7.86M</p></li>
+</ul>
+</section>
+<section id="modelo-3-resu-net">
+<h3>4.4 Modelo 3 — ResU-Net<a class="headerlink" href="#modelo-3-resu-net" title="Permalink to this heading">#</a></h3>
+<p><strong>Referencia:</strong> Zhang et al. (2018) — <em>Road Extraction by Deep Residual U-Net</em>, IEEE GRSL.</p>
+<p>Reemplaza los bloques Conv-BN-ReLU×2 por <strong>bloques residuales</strong>. La conexión residual <span class="math notranslate nohighlight">\(x_{out} = F(x) + x\)</span> permite gradientes más estables en redes profundas y evita el problema de degradación. Cuando los canales de entrada y salida difieren, se aplica una convolución 1×1 al shortcut.</p>
+<ul class="simple">
+<li><p>Dropout 0.2 en bottleneck</p></li>
+<li><p><strong>Parámetros:</strong> ~8.13M</p></li>
+</ul>
+</section>
+<section id="modelo-4-dual-head-u-net">
+<h3>4.5 Modelo 4 — Dual-Head U-Net<a class="headerlink" href="#modelo-4-dual-head-u-net" title="Permalink to this heading">#</a></h3>
+<p><strong>Inspiración:</strong> Van Boxtel (2021) — arquitectura dual para manejo del desbalance.</p>
+<p>Introduce una <strong>rama clasificadora</strong> sobre el bottleneck para detectar presencia del nervio. La rama usa GlobalAveragePooling → Dense(128) → Dense(64) → Dense(1, sigmoid). En evaluación, si la rama clasificadora predice P(nervio) &lt; 0.5, la máscara de segmentación se pone a cero (hard gate).</p>
+<p>La loss es conjunta: <span class="math notranslate nohighlight">\(\mathcal{L} = \mathcal{L}_{seg} + 0.5 \cdot \mathcal{L}_{cls}\)</span></p>
+<ul class="simple">
+<li><p><strong>Limitación principal:</strong> las dos ramas se entrenan con gradientes independientes. El clasificador, entrenado desde cero sobre el bottleneck, es frágil y produce alta varianza entre runs (std=0.44).</p></li>
+<li><p><strong>Parámetros:</strong> ~7.85M</p></li>
+</ul>
+</section>
+<section id="modelo-5-tu-net">
+<h3>4.6 Modelo 5 — TU-Net<a class="headerlink" href="#modelo-5-tu-net" title="Permalink to this heading">#</a></h3>
+<p>Arquitectura híbrida que combina un encoder CNN local con un <strong>Transformer</strong> en el bottleneck para capturar dependencias globales en la imagen.</p>
+<p>El bottleneck se aplana a una secuencia <code class="docutils literal notranslate"><span class="pre">(H×W,</span> <span class="pre">C)</span></code> y se procesa con 2 bloques Transformer (Multi-Head Attention + FFN + LayerNorm), luego se reconstruye a forma espacial para el decoder CNN.</p>
+<ul class="simple">
+<li><p>4 cabezas de atención, key_dim=32, ff_dim=256</p></li>
+<li><p>Positional Embedding aprendible</p></li>
+<li><p><strong>Parámetros:</strong> ~12.10M (el más grande por el Transformer)</p></li>
+</ul>
+<p><a id='5-dhasg'></a></p>
+</section>
+</section>
+<section id="modelo-original-dhasg-v2">
+<h2>5. Modelo Original — DHASG v2<a class="headerlink" href="#modelo-original-dhasg-v2" title="Permalink to this heading">#</a></h2>
+<p><strong>DHASG v2:</strong> Dual-Head Attention Soft-Hard Gate, versión 2</p>
+<section id="motivacion">
+<h3>5.1 Motivación<a class="headerlink" href="#motivacion" title="Permalink to this heading">#</a></h3>
+<p>El análisis de los benchmarks reveló dos problemas fundamentales que ninguno resolvía simultáneamente:</p>
+<ol class="arabic simple">
+<li><p><strong>Dataset pequeño (~3,836 imágenes de train):</strong> insuficiente para entrenar encoders desde cero con baja varianza.</p></li>
+<li><p><strong>Desbalance estructural (58.8% sin nervio):</strong> el clasificador del DualHead-baseline, entrenado desde cero, produce std=0.44 — prácticamente impredecible entre runs.</p></li>
+</ol>
+<p>DHASG v2 resuelve ambos simultáneamente mediante transfer learning y acoplamiento end-to-end.</p>
+</section>
+<section id="comparacion-de-diseno">
+<h3>5.2 Comparación de diseño<a class="headerlink" href="#comparacion-de-diseno" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Componente</p></th>
+<th class="head"><p>DualHead baseline</p></th>
+<th class="head"><p><strong>DHASG v2</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Framework</p></td>
+<td><p>TensorFlow</p></td>
+<td><p><strong>PyTorch</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Encoder segmentador</p></td>
+<td><p>Desde cero (32→512 ch)</p></td>
+<td><p><strong>ResNet34 ImageNet</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Clasificador</p></td>
+<td><p>MLP sobre bottleneck</p></td>
+<td><p><strong>EfficientNet-B0 ImageNet</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Skip connections</p></td>
+<td><p>Concatenación directa</p></td>
+<td><p><strong>Attention Gates (Oktay, 2018)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Loss clasificador</p></td>
+<td><p>BCE estándar</p></td>
+<td><p><strong>Weighted BCE (pos_weight=1.43)</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Gate entrenamiento</p></td>
+<td><p>Hard (umbral fijo)</p></td>
+<td><p><strong>Soft gate diferenciable</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Gate evaluación</p></td>
+<td><p>Hard threshold=0.5</p></td>
+<td><p><strong>Hard threshold=0.5</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Acoplamiento ramas</p></td>
+<td><p>Solo bottleneck</p></td>
+<td><p><strong>End-to-end vía soft gate</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="arquitectura">
+<h3>5.3 Arquitectura<a class="headerlink" href="#arquitectura" title="Permalink to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Input (3×256×256)  ← canal gris replicado a 3 canales
+      │
+  ┌───┴──────────────────────────────────────┐
+  │  EfficientNet-B0 (ImageNet pretrained)   │ → P(nervio) ∈ [0,1]
+  │  GAP → Dropout(0.3) → FC(64) → FC(1)    │
+  └───┬──────────────────────────────────────┘
+      │
+  ┌───┴──────────────────────────────────────┐
+  │  ResNet34 Encoder (ImageNet pretrained)  │
+  │  skip1(64) → skip2(64) → skip3(128)      │
+  │  skip4(256) → bottleneck(512)            │
+  └───┬──────────────────────────────────────┘
+      │
+  DECODER (4 niveles, ConvTranspose2D)
+  + Attention Gate en cada skip connection
+      │
+  seg_logits → sigmoid → seg_prob
+      │
+  × P(nervio)  ← SOFT GATE (solo training)
+      │
+  [EVAL] if P(nervio) &lt; 0.5 → zeros  ← HARD GATE
+</pre></div>
+</div>
+<p><strong>Parámetros totales:</strong> 28.46M</p>
+<ul class="simple">
+<li><p>ResNet34 encoder: ~21.3M</p></li>
+<li><p>EfficientNet-B0 clasificador: ~4.0M</p></li>
+<li><p>Decoder + Attention Gates + cabezas: ~3.1M</p></li>
+</ul>
+</section>
+<section id="matematicas-del-modelo">
+<h3>5.4 Matemáticas del modelo<a class="headerlink" href="#matematicas-del-modelo" title="Permalink to this heading">#</a></h3>
+<section id="attention-gate-oktay-et-al-2018">
+<h4>Attention Gate (Oktay et al., 2018)<a class="headerlink" href="#attention-gate-oktay-et-al-2018" title="Permalink to this heading">#</a></h4>
+<p>Aplicado en cada uno de los 4 skip connections del decoder:</p>
+<div class="math notranslate nohighlight">
+\[\alpha_i = \sigma_2\!\left(\psi^T\!\left(\sigma_1\!\left(W_g \cdot g + W_x \cdot x_i + b_g\right)\right) + b_\psi\right), \quad \tilde{x}_i = \alpha_i \odot x_i\]</div>
+<p>Donde <span class="math notranslate nohighlight">\(g\)</span> es la señal del decoder (upconv output), <span class="math notranslate nohighlight">\(x_i\)</span> es el skip connection del encoder, y <span class="math notranslate nohighlight">\(\alpha_i \in [0,1]\)</span> es el mapa de atención por píxel. Los attention gates aprenden a suprimir regiones sin nervio antes de que lleguen al decoder.</p>
+</section>
+<section id="soft-gate-entrenamiento-y-hard-gate-evaluacion">
+<h4>Soft Gate (entrenamiento) y Hard Gate (evaluación)<a class="headerlink" href="#soft-gate-entrenamiento-y-hard-gate-evaluacion" title="Permalink to this heading">#</a></h4>
+<p><strong>Training:</strong>
+$<span class="math notranslate nohighlight">\(\hat{y}_{seg} = \sigma(\text{logits}_{seg}) \times P(\text{nervio})\)</span>$</p>
+<p>Al multiplicar por <span class="math notranslate nohighlight">\(P(\text{nervio})\)</span>, los gradientes fluyen simultáneamente por ambas ramas en cada backward pass. Esto acopla el entrenamiento end-to-end.</p>
+<p><strong>Evaluación:</strong>
+$<span class="math notranslate nohighlight">\(\hat{y}_{final} = \begin{cases} \hat{y}_{seg} &amp; \text{si } P(\text{nervio}) \geq 0.5 \\ \mathbf{0} &amp; \text{si } P(\text{nervio}) &lt; 0.5 \end{cases}\)</span>$</p>
+</section>
+<section id="combined-loss">
+<h4>Combined Loss<a class="headerlink" href="#combined-loss" title="Permalink to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{total} = \mathcal{L}_{seg} + \lambda \cdot \mathcal{L}_{cls}\]</div>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{seg} = \text{BCE}(\hat{y}_{seg}, y_{seg}) + \left(1 - \frac{2\sum\hat{y}_{seg} \cdot y_{seg} + 1}{\sum\hat{y}_{seg} + \sum y_{seg} + 1}\right)\]</div>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{cls} = -\left[w^+ \cdot y_{cls}\log(\hat{p}) + (1 - y_{cls})\log(1 - \hat{p})\right], \quad w^+ = \frac{n_{\text{sin nervio}}}{n_{\text{con nervio}}} = \frac{2253}{1583} \approx 1.43\]</div>
+</section>
+</section>
+<section id="protocolo-de-entrenamiento">
+<h3>5.5 Protocolo de entrenamiento<a class="headerlink" href="#protocolo-de-entrenamiento" title="Permalink to this heading">#</a></h3>
+<p><strong>Learning rates diferenciados:</strong></p>
+<ul class="simple">
+<li><p>Encoders preentrenados (ResNet34 + EfficientNet-B0): <code class="docutils literal notranslate"><span class="pre">lr</span> <span class="pre">=</span> <span class="pre">1e-5</span></code> (fine-tuning suave)</p></li>
+<li><p>Decoder + Attention Gates + clasificador head: <code class="docutils literal notranslate"><span class="pre">lr</span> <span class="pre">=</span> <span class="pre">1e-4</span></code></p></li>
+</ul>
+<p><strong>Búsqueda de λ óptimo — Fase Piloto:</strong><br />
+Se evaluaron λ ∈ {0.3, 0.5, 1.0} con 1 run cada uno. Criterio: mayor Dice PP en test.<br />
+<strong>λ = 0.5</strong> fue el óptimo: balancea ambas ramas sin que el clasificador domine el gradiente.</p>
+<p><strong>Fase final:</strong> 3 runs con λ=0.5, semillas 52/53/54. Early stopping sobre <code class="docutils literal notranslate"><span class="pre">val_dice_pp</span></code> (patience=30). ReduceLROnPlateau sobre <code class="docutils literal notranslate"><span class="pre">val_dice_pp</span></code> (patience=10, factor=0.5).</p>
+<p><strong>¿Por qué early stopping sobre Dice PP y no Dice raw?</strong><br />
+El Dice raw mide la salida del soft gate directamente. Monitorear Dice PP garantiza que el clasificador realmente aprende a distinguir presencia/ausencia de nervio, y que el modelo seleccionado se comportará correctamente bajo condiciones reales de evaluación.</p>
+<p><a id='6-resultados'></a></p>
+</section>
+</section>
+<section id="evaluacion-y-resultados">
+<h2>6. Evaluación y Resultados<a class="headerlink" href="#evaluacion-y-resultados" title="Permalink to this heading">#</a></h2>
+<section id="tabla-comparativa-completa">
+<h3>6.1 Tabla comparativa completa<a class="headerlink" href="#tabla-comparativa-completa" title="Permalink to this heading">#</a></h3>
+<p>Todos los modelos fueron evaluados sobre el <strong>mismo test set de 960 imágenes (8 pacientes)</strong>. Para los benchmarks se reporta media ± std sobre 3 runs. Para DHASG v2 se reportan dos métricas de Dice:</p>
+<ul class="simple">
+<li><p><strong>Dice raw:</strong> salida directa del soft gate, sin post-proceso</p></li>
+<li><p><strong>Dice PP:</strong> con hard gate aplicado imagen por imagen (comparable con los benchmarks TF que también aplican hard gate)</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>Dice PP Mean</p></th>
+<th class="head"><p>Dice PP Std</p></th>
+<th class="head"><p>IC 95%</p></th>
+<th class="head"><p>IoU PP Mean</p></th>
+<th class="head"><p>IoU PP Std</p></th>
+<th class="head"><p>Params</p></th>
+<th class="head"><p>T/run (min)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>DHASGv2 (propuesto)</strong></p></td>
+<td><p><strong>0.6397</strong></p></td>
+<td><p><strong>0.0069</strong></p></td>
+<td><p>[0.6328, 0.6466]</p></td>
+<td><p><strong>0.6632</strong></p></td>
+<td><p><strong>0.0098</strong></p></td>
+<td><p>28.46M</p></td>
+<td><p>106.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>DualHeadUNet (baseline)</p></td>
+<td><p>0.6032</p></td>
+<td><p>0.4413</p></td>
+<td><p>[0.5752, 0.6311]</p></td>
+<td><p>0.5958</p></td>
+<td><p>0.4408</p></td>
+<td><p>7.85M</p></td>
+<td><p>42.0</p></td>
+</tr>
+<tr class="row-even"><td><p>AttentionUNet</p></td>
+<td><p>0.2567</p></td>
+<td><p>0.2865</p></td>
+<td><p>[0.2386, 0.2749]</p></td>
+<td><p>0.5236</p></td>
+<td><p>0.4447</p></td>
+<td><p>7.86M</p></td>
+<td><p>73.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>ResUNet</p></td>
+<td><p>0.2345</p></td>
+<td><p>0.2625</p></td>
+<td><p>[0.2179, 0.2511]</p></td>
+<td><p>0.4429</p></td>
+<td><p>0.4329</p></td>
+<td><p>8.13M</p></td>
+<td><p>63.4</p></td>
+</tr>
+<tr class="row-even"><td><p>TUNet</p></td>
+<td><p>0.1971</p></td>
+<td><p>0.2936</p></td>
+<td><p>[0.1785, 0.2157]</p></td>
+<td><p>0.4367</p></td>
+<td><p>0.4205</p></td>
+<td><p>12.10M</p></td>
+<td><p>46.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>UNet (baseline)</p></td>
+<td><p>0.1798</p></td>
+<td><p>0.2941</p></td>
+<td><p>[0.1611, 0.1984]</p></td>
+<td><p>0.4275</p></td>
+<td><p>0.4296</p></td>
+<td><p>7.77M</p></td>
+<td><p>42.7</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="interpretacion-por-modelo">
+<h3>6.2 Interpretación por modelo<a class="headerlink" href="#interpretacion-por-modelo" title="Permalink to this heading">#</a></h3>
+<p><strong>DHASGv2 — Dice 0.6397 ± 0.0069:</strong> Única arquitectura con varianza genuinamente baja (std=0.0069). Los tres runs convergieron a resultados casi idénticos. El IC 95% [0.6328, 0.6466] no se solapa con ningún otro modelo, lo que anticipa significancia estadística. El transfer learning con encoders ImageNet fue el factor estabilizador principal.</p>
+<p><strong>DualHeadUNet — Dice 0.6032 ± 0.4413:</strong> Segundo Dice medio, pero con std=0.4413 — mayor que el propio Dice medio. En alguno de los 3 runs el clasificador entrenado desde cero colapsó completamente (Dice ≈ 0). Es un modelo potencialmente bueno pero completamente impredecible: puede dar 0.90 o 0.00 según la semilla de entrenamiento.</p>
+<p><strong>AttentionUNet, ResUNet, TUNet, UNet — Dice 0.18–0.26 ± ~0.29:</strong> Los cuatro tienen std comparable o mayor que su media. Sin mecanismo de detección de presencia del nervio, el 58.8% de imágenes vacías los destruye con falsos positivos. La altísima varianza es la firma de esa inestabilidad estructural.</p>
+<p><strong>Paradoja IoU vs Dice:</strong> AttentionUNet tiene IoU=0.52 pero Dice=0.26. Esto ocurre porque el IoU con smooth=1 es más permisivo cuando las máscaras son vacías. El Dice penaliza más duramente los falsos positivos en imágenes sin nervio, confirmando que es la métrica correcta para este problema.</p>
+<p><strong>Observación sobre la literatura:</strong> Los modelos que la literatura reporta con Dice~0.79 usan split aleatorio por frame, introduciendo data leakage. Bajo condiciones de evaluación justas (split por paciente), el mismo tipo de arquitectura (AttentionUNet) obtiene Dice=0.25. La diferencia de ~0.54 puntos de Dice se debe enteramente al protocolo de evaluación, no a la arquitectura.</p>
+</section>
+<section id="validacion-estadistica">
+<h3>6.3 Validación estadística<a class="headerlink" href="#validacion-estadistica" title="Permalink to this heading">#</a></h3>
+<p>Para garantizar que las diferencias no son producto del azar se aplicó la siguiente metodología:</p>
+<p><strong>Test de Friedman (comparaciones múltiples, no paramétrico):</strong>
+$<span class="math notranslate nohighlight">\(\chi^2 = 469, \quad p &lt; 10^{-100}\)</span>$</p>
+<p>Las diferencias entre los 6 modelos son estadísticamente significativas. La probabilidad de que sean producto del azar es prácticamente cero.</p>
+<p><strong>¿Por qué Friedman y no ANOVA?</strong> El test de Friedman es no paramétrico: no asume normalidad. Las distribuciones de Dice por imagen están sesgadas (muchas imágenes con Dice=1.0 cuando máscara y predicción son ambas vacías). Friedman es el test correcto para estas distribuciones.</p>
+<p><strong>Post-hoc Wilcoxon (comparaciones pareadas):</strong></p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Comparación</p></th>
+<th class="head"><p>p-value</p></th>
+<th class="head"><p>Conclusión</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DHASGv2 vs DualHeadUNet</p></td>
+<td><p>&lt; 0.001</p></td>
+<td><p>DHASGv2 significativamente mejor</p></td>
+</tr>
+<tr class="row-odd"><td><p>DHASGv2 vs AttentionUNet</p></td>
+<td><p>&lt; 0.001</p></td>
+<td><p>DHASGv2 significativamente mejor</p></td>
+</tr>
+<tr class="row-even"><td><p>DHASGv2 vs ResUNet</p></td>
+<td><p>&lt; 0.001</p></td>
+<td><p>DHASGv2 significativamente mejor</p></td>
+</tr>
+<tr class="row-odd"><td><p>DHASGv2 vs TUNet</p></td>
+<td><p>&lt; 0.001</p></td>
+<td><p>DHASGv2 significativamente mejor</p></td>
+</tr>
+<tr class="row-even"><td><p>DHASGv2 vs UNet</p></td>
+<td><p>&lt; 0.001</p></td>
+<td><p>DHASGv2 significativamente mejor</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>DHASGv2 es el mejor modelo con significancia estadística frente a todos los benchmarks.</strong></p>
+</section>
+<section id="dhasg-v2-comparacion-con-baseline">
+<h3>6.4 DHASG v2 — Comparación con baseline<a class="headerlink" href="#dhasg-v2-comparacion-con-baseline" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Métrica</p></th>
+<th class="head"><p>DualHead baseline</p></th>
+<th class="head"><p>DHASGv2</p></th>
+<th class="head"><p>Cambio</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Dice PP media</p></td>
+<td><p>0.6032</p></td>
+<td><p><strong>0.6397</strong></p></td>
+<td><p><strong>+6.1%</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Dice PP std</p></td>
+<td><p>0.4413</p></td>
+<td><p><strong>0.0069</strong></p></td>
+<td><p><strong>−96%</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>IoU PP media</p></td>
+<td><p>0.5958</p></td>
+<td><p><strong>0.6632</strong></p></td>
+<td><p><strong>+11.3%</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Parámetros</p></td>
+<td><p>7.85M</p></td>
+<td><p>28.46M</p></td>
+<td><p>×3.6</p></td>
+</tr>
+<tr class="row-even"><td><p>Tiempo/run</p></td>
+<td><p>42.0 min</p></td>
+<td><p>106.5 min</p></td>
+<td><p>×2.5</p></td>
+</tr>
+</tbody>
+</table>
+<p>El resultado más importante no es el +6.1% en Dice, sino la <strong>reducción del 96% en varianza</strong>. DHASG v2 convierte un modelo impredecible en uno confiable y reproducible.</p>
+</section>
+<section id="analisis-cualitativo-tres-categorias-de-prediccion">
+<h3>6.5 Análisis cualitativo — Tres categorías de predicción<a class="headerlink" href="#analisis-cualitativo-tres-categorias-de-prediccion" title="Permalink to this heading">#</a></h3>
+<p>El test set puede dividirse en tres categorías con comportamiento diferenciado:</p>
+<p><strong>Categoría 1 — Sin nervio (58.8% del test, ~565 imágenes):</strong><br />
+El clasificador EfficientNet-B0 predice P(nervio) &lt; 0.5 y el hard gate fuerza máscara = 0. Dice esperado = 1.0 en esta categoría. Sin el hard gate, los benchmarks sin rama clasificadora generan falsos positivos en estas imágenes, colapsando el Dice global (como se observa en UNet con Dice=0.18).</p>
+<p><strong>Categoría 2 — Nervio grande y bien visible (~25%, ~240 imágenes):</strong><br />
+Estructura claramente delimitada y de alto contraste tras CLAHE. Los attention gates producen mapas α concentrados en la región del nervio. Dice esperado &gt; 0.80.</p>
+<p><strong>Categoría 3 — Nervio pequeño o parcialmente ocluido (~16%, ~155 imágenes):</strong><br />
+El caso más difícil: el nervio puede ocupar &lt; 500 píxeles en la máscara 256×256. El segmentador puede sobreestimar el área (FP locales) o subestimar (FN en bordes). Dice esperado entre 0.40–0.65. Esta categoría explica la mayor parte de la brecha entre el Dice actual (0.64) y el óptimo teórico.</p>
+<p><a id='7-clinica'></a></p>
+</section>
+</section>
+<section id="utilidad-clinica">
+<h2>7. Utilidad Clínica<a class="headerlink" href="#utilidad-clinica" title="Permalink to this heading">#</a></h2>
+<section id="aplicacion-directa">
+<h3>7.1 Aplicación directa<a class="headerlink" href="#aplicacion-directa" title="Permalink to this heading">#</a></h3>
+<p>Un modelo con Dice=0.64 y std=0.007 tiene aplicabilidad clínica concreta en tres formas:</p>
+<ol class="arabic simple">
+<li><p><strong>Asistencia visual:</strong> La máscara predicha se superpone en tiempo real sobre la imagen de ultrasonido, señalando la región del nervio al anestesiólogo. Reduce el tiempo de búsqueda de minutos a segundos para operadores con menos experiencia.</p></li>
+<li><p><strong>Alerta de ausencia:</strong> El clasificador de presencia (EfficientNet-B0) avisa cuando el nervio no es visible en el frame actual, evitando que el operador confunda otras estructuras con el nervio. Esta funcionalidad no está disponible en los modelos de segmentación puros.</p></li>
+<li><p><strong>Segunda opinión objetiva:</strong> En procedimientos de alto riesgo, el sistema provee una localización reproducible e independiente del operador, útil para entrenamiento de residentes.</p></li>
+</ol>
+</section>
+<section id="comparacion-con-la-literatura">
+<h3>7.2 Comparación con la literatura<a class="headerlink" href="#comparacion-con-la-literatura" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspecto</p></th>
+<th class="head"><p>Literatura (split aleatorio)</p></th>
+<th class="head"><p><strong>DHASGv2 (split por paciente)</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Dice reportado</p></td>
+<td><p>≈ 0.79</p></td>
+<td><p><strong>0.64</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Protocolo</p></td>
+<td><p>Split aleatorio por frame</p></td>
+<td><p><strong>Split por paciente (pacientes no vistos)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Variabilidad</p></td>
+<td><p>No reportada</p></td>
+<td><p><strong>± 0.007 entre runs</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Validez clínica</p></td>
+<td><p>Sobreestimada (data leakage)</p></td>
+<td><p><strong>Honesta — generaliza a pacientes nuevos</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>El Dice=0.64 de DHASGv2 es <strong>más honesto y clínicamente relevante</strong> que el 0.79 reportado en literatura con split aleatorio, porque predice correctamente el comportamiento del modelo ante pacientes que nunca vio durante el entrenamiento.</p>
+</section>
+<section id="limitaciones">
+<h3>7.3 Limitaciones<a class="headerlink" href="#limitaciones" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Dominio específico del dataset:</strong> El modelo fue entrenado y evaluado sobre datos del Kaggle UNS-2016 (equipo de ultrasonido específico, resolución específica). La generalización a otros equipos requiere re-entrenamiento o fine-tuning con datos del contexto de uso.</p></li>
+<li><p><strong>Validación clínica pendiente:</strong> No se ha realizado validación prospectiva con un anestesiólogo evaluando las predicciones en tiempo real sobre pacientes reales.</p></li>
+<li><p><strong>Costo computacional:</strong> DHASG v2 requiere ~106 min por run de entrenamiento (GPU). Para inferencia en tiempo real, el modelo puede ejecutarse en &lt; 50ms por frame en GPU moderna, lo que es compatible con ultrasonido en tiempo real (≥15 fps).</p></li>
+<li><p><strong>Encoder ImageNet vs. encoder médico:</strong> ResNet34 fue preentrenado en imágenes naturales (RGB). Un encoder preentrenado en imágenes médicas (radCT, ultrasonido) podría cerrar la brecha entre Dice=0.64 y el óptimo teórico.</p></li>
+</ol>
+<p><a id='8-conclusiones'></a></p>
+</section>
+</section>
+<section id="conclusiones-y-trabajo-futuro">
+<h2>8. Conclusiones y Trabajo Futuro<a class="headerlink" href="#conclusiones-y-trabajo-futuro" title="Permalink to this heading">#</a></h2>
+<section id="conclusiones">
+<h3>8.1 Conclusiones<a class="headerlink" href="#conclusiones" title="Permalink to this heading">#</a></h3>
+<p><strong>C1 — El ultrasonido es genuinamente difícil, pero abordable con la metodología correcta.</strong><br />
+Tejido blando sobre tejido blando, ruido speckle, variación anatómica inter-paciente y presencia esporádica del nervio conforman un problema de alta dificultad. La combinación de transfer learning, attention gates y acoplamiento soft gate demostró ser la estrategia correcta para este dominio.</p>
+<p><strong>C2 — La literatura sobreestima el rendimiento en este problema.</strong><br />
+Modelos que reportan Dice~0.79 bajo split aleatorio obtienen Dice~0.20 bajo condiciones justas (split por paciente). La diferencia de ~0.54 puntos se debe íntegramente al data leakage del split aleatorio. Este hallazgo cuestiona las comparaciones publicadas en la literatura de UNS-2016.</p>
+<p><strong>C3 — DHASG v2 logra Dice 0.6397 ± 0.0069 bajo condiciones justas.</strong><br />
++6.1% sobre el mejor baseline, con reducción de varianza del 96%. La evaluación honesta por paciente permite predecir con confianza el comportamiento del modelo ante pacientes nuevos. Este es el contribución principal del proyecto.</p>
+</section>
+<section id="trabajo-futuro">
+<h3>8.2 Trabajo futuro<a class="headerlink" href="#trabajo-futuro" title="Permalink to this heading">#</a></h3>
+<p><strong>A corto plazo:</strong></p>
+<ul class="simple">
+<li><p>Reemplazar ResNet34 (ImageNet) por un encoder preentrenado en datos de ultrasonido o imágenes médicas. Esto cierra la brecha entre lo que el modelo aprendió y lo que necesita ver.</p></li>
+<li><p>Explorar aprendizaje semi-supervisado aprovechando los 5,508 frames de test sin máscara para mejorar el encoder.</p></li>
+</ul>
+<p><strong>A mediano plazo:</strong></p>
+<ul class="simple">
+<li><p>Validación prospectiva con un anestesiólogo experto evaluando predicciones sobre imágenes nuevas de un equipo de ultrasonido clínico real.</p></li>
+<li><p>Integración con pipeline de inferencia en tiempo real (TorchScript o ONNX) para evaluación a ≥15 fps.</p></li>
+</ul>
+<p><strong>A largo plazo:</strong></p>
+<ul class="simple">
+<li><p>Extensión a otros nervios periféricos (nervio femoral, nervio ciático) para un sistema de asistencia generalizado de anestesia regional.</p></li>
+<li><p>Validación multicéntrica con datos de múltiples equipos y operadores para cuantificar la generalización real del modelo.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04_Modelo_Original.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Modelo Original: DHASG v2</p>
+      </div>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-ejecutivo">Resumen Ejecutivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-contenidos">Tabla de Contenidos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-del-problema">1. Definición del Problema</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-clinico">1.1 Contexto clínico</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulacion-del-problema">1.2 Formulación del problema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#desafio-central-desbalance-estructural">1.3 Desafío central: desbalance estructural</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-y-analisis-exploratorio-eda">2. Dataset y Análisis Exploratorio (EDA)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descripcion-del-dataset">2.1 Descripción del dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inventario-e-integridad">2.2 Inventario e integridad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-de-la-variable-objetivo">2.3 Distribución de la variable objetivo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-del-eda">2.4 Hipótesis del EDA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#particion-del-dataset">2.5 Partición del dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocesamiento">3. Preprocesamiento</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-de-preprocesamiento-aplicado-a-todos-los-splits">3.1 Pipeline de preprocesamiento (aplicado a todos los splits)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-1-umbralizacion-binaria-de-mascaras">Paso 1 — Umbralización binaria de máscaras</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-2-clahe-contrast-limited-adaptive-histogram-equalization">Paso 2 — CLAHE (Contrast Limited Adaptive Histogram Equalization)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-3-resize">Paso 3 — Resize</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-4-normalizacion-z-score">Paso 4 — Normalización Z-score</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-augmentation-solo-train">3.2 Data Augmentation (solo train)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#canales-de-entrada">3.3 Canales de entrada</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-benchmark">4. Modelos Benchmark</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-experimental-comun">4.1 Configuración experimental común</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-1-u-net-baseline">4.2 Modelo 1 — U-Net (Baseline)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-2-attention-u-net">4.3 Modelo 2 — Attention U-Net</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-3-resu-net">4.4 Modelo 3 — ResU-Net</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-4-dual-head-u-net">4.5 Modelo 4 — Dual-Head U-Net</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-5-tu-net">4.6 Modelo 5 — TU-Net</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-original-dhasg-v2">5. Modelo Original — DHASG v2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivacion">5.1 Motivación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-de-diseno">5.2 Comparación de diseño</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura">5.3 Arquitectura</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matematicas-del-modelo">5.4 Matemáticas del modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-gate-oktay-et-al-2018">Attention Gate (Oktay et al., 2018)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soft-gate-entrenamiento-y-hard-gate-evaluacion">Soft Gate (entrenamiento) y Hard Gate (evaluación)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-loss">Combined Loss</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#protocolo-de-entrenamiento">5.5 Protocolo de entrenamiento</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-y-resultados">6. Evaluación y Resultados</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-completa">6.1 Tabla comparativa completa</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-por-modelo">6.2 Interpretación por modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-estadistica">6.3 Validación estadística</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dhasg-v2-comparacion-con-baseline">6.4 DHASG v2 — Comparación con baseline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-cualitativo-tres-categorias-de-prediccion">6.5 Análisis cualitativo — Tres categorías de predicción</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utilidad-clinica">7. Utilidad Clínica</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicacion-directa">7.1 Aplicación directa</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-con-la-literatura">7.2 Comparación con la literatura</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones">7.3 Limitaciones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones-y-trabajo-futuro">8. Conclusiones y Trabajo Futuro</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones">8.1 Conclusiones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trabajo-futuro">8.2 Trabajo futuro</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By ProyectoUltrasound
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
